@@ -1,0 +1,13 @@
+name: Pilot deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deployment-placeholder:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain deployment configuration requirement
+        run: |
+          echo "Deployment provider and credentials are not configured in this scaffold."
+          echo "Add provider-specific deployment steps only after approval."

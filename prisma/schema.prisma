@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum MentorSessionStatus {
+  ACTIVE
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+enum ContentType {
+  ARTICLE
+  JOB
+  PRODUCT
+}
+
+model User {
+  id             String          @id @default(cuid())
+  externalUserId String          @unique
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  mentorSessions MentorSession[]
+}
+
+model MentorProfile {
+  id          String          @id @default(cuid())
+  slug        String          @unique
+  name        String
+  technology  String
+  teachingStyle String
+  promptKey   String
+  isEnabled   Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  sessions    MentorSession[]
+}
+
+model MentorSession {
+  id          String              @id @default(cuid())
+  userId      String
+  mentorId    String
+  status      MentorSessionStatus @default(ACTIVE)
+  startedAt   DateTime            @default(now())
+  endedAt     DateTime?
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mentor      MentorProfile       @relation(fields: [mentorId], references: [id])
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  @@index([userId, status])
+  @@index([mentorId, startedAt])
+}
+
+model ContentItem {
+  id            String      @id @default(cuid())
+  externalId    String?
+  type          ContentType
+  title         String
+  summary       String?
+  destinationUrl String
+  source        String
+  publishedAt   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([source, externalId])
+  @@index([type, publishedAt])
+}
+
+model AnalyticsEvent {
+  id          String   @id @default(cuid())
+  eventType   String
+  userId      String?
+  sessionId   String?
+  contentId   String?
+  destination  String?
+  properties  Json?
+  occurredAt  DateTime @default(now())
+
+  @@index([eventType, occurredAt])
+  @@index([sessionId])
+}

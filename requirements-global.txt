@@ -1,0 +1,75 @@
+# OnlyDucks - Shared Development Environment and Tool Inventory
+# This is NOT a pip requirements file. JavaScript dependencies are managed
+# through package.json and package-lock.json.
+
+# Languages:
+# - TypeScript / JavaScript
+# - HTML5 / CSS
+# - SQL (PostgreSQL)
+# - JSON, YAML, Markdown
+
+# Runtime:
+# - Node.js LTS compatible with selected Next.js version (.nvmrc)
+# - npm
+# - Git
+
+# Application:
+# - Next.js App Router
+# - React
+# - TypeScript
+# - Zod for runtime validation
+# - PostgreSQL
+# - Prisma ORM (proposed default; confirm with TL1; do not run two ORMs)
+# - Oscar API (external contract and credentials to be confirmed)
+# - Existing notodoescodigo.com SSO / identity provider (protocol to be confirmed)
+# - Existing content API or approved controlled feed (to be confirmed)
+# - S3-compatible storage only if pilot requires object/media storage
+
+# Quality:
+# - ESLint
+# - Prettier
+# - TypeScript compiler
+# - Vitest for unit tests
+# - Playwright for end-to-end tests
+# - npm audit
+# - GitHub Actions
+
+# Operations:
+# - Docker
+# - Docker Compose for local services
+# - Next.js-compatible hosting provider (to be selected/confirmed)
+# - Server-side environment variables and approved secret management
+# - Application logging and usage/cost monitoring
+
+# Suggested VS Code extensions:
+# - dbaeumer.vscode-eslint
+# - esbenp.prettier-vscode
+# - bradlc.vscode-tailwindcss (only if Tailwind is adopted)
+# - prisma.prisma (only if Prisma is selected)
+# - ms-azuretools.vscode-docker
+# - github.vscode-pull-request-github (optional)
+
+# Important files:
+# - package.json / package-lock.json
+# - tsconfig.json / next.config.ts
+# - eslint.config.mjs / .prettierrc.json / .nvmrc
+# - .env.example / .gitignore
+# - Dockerfile / docker-compose.yml
+# - .github/workflows/ci.yml
+
+# Proposed environment variables (adapt to confirmed provider contracts):
+# DATABASE_URL
+# OSCAR_API_BASE_URL
+# OSCAR_API_KEY
+# AUTH_ISSUER_URL
+# AUTH_CLIENT_ID
+# AUTH_CLIENT_SECRET
+# AUTH_CALLBACK_URL
+# APP_BASE_URL
+# S3_ENDPOINT (conditional)
+# S3_BUCKET (conditional)
+# S3_ACCESS_KEY_ID (conditional)
+# S3_SECRET_ACCESS_KEY (conditional)
+
+# Never commit real credentials. Never expose server secrets via NEXT_PUBLIC_*.
+# Confirm exact versions and integration requirements during technical audit.
