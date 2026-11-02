@@ -27,10 +27,10 @@ export const initialMentorProfiles: MentorProfileDefinition[] = [
     promptKey: 'interview-prep-v1',
   },
   {
-    slug: 'supportive-learning',
-    name: 'Supportive Learning',
-    technology: 'General software engineering',
-    teachingStyle: 'Supportive',
-    promptKey: 'supportive-learning-v1',
+    slug: 'devops-cloud',
+    name: 'DevOps & Cloud Mentor',
+    technology: 'DevOps & Cloud',
+    teachingStyle: 'Architecture and deployments',
+    promptKey: 'devops-cloud-v1',
   },
 ];
