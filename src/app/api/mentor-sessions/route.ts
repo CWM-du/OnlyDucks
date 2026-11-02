@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+import { requireAuthentication } from '@/lib/security/require-auth';
 
 const createSessionSchema = z.object({
   mentorSlug: z.string().min(1),
@@ -11,6 +12,9 @@ const createSessionSchema = z.object({
  * creation, authorization, concurrency-safe enforcement, and audit logging.
  */
 export async function POST(request: Request) {
+  const auth = await requireAuthentication(request);
+  if (!auth.ok) return auth.response;
+
   const parsed = createSessionSchema.safeParse(await request.json().catch(() => null));
 
   if (!parsed.success) {
