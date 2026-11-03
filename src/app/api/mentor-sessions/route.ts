@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { requireAuthentication } from '@/lib/security/require-auth';
+import { hasValidRequestOrigin } from '@/modules/auth/session';
 
 const createSessionSchema = z.object({
   mentorSlug: z.string().min(1),
@@ -12,6 +13,7 @@ const createSessionSchema = z.object({
  * creation, authorization, concurrency-safe enforcement, and audit logging.
  */
 export async function POST(request: Request) {
+  if (!hasValidRequestOrigin(request)) return NextResponse.json({ error: 'Invalid origin.' }, { status: 403 });
   const auth = await requireAuthentication(request);
   if (!auth.ok) return auth.response;
 
