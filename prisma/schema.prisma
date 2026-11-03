@@ -26,6 +26,8 @@ model User {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   mentorSessions MentorSession[]
+  localCredential LocalCredential?
+  authSessions AuthSession[]
 }
 
 model MentorProfile {
@@ -85,4 +87,26 @@ model AnalyticsEvent {
 
   @@index([eventType, occurredAt])
   @@index([sessionId])
+}
+
+// MVP-only local identities; SSO will replace the login provider, not the User id.
+model LocalCredential {
+  userId String @id
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  passwordHash String
+  failedAttempts Int @default(0)
+  lockedUntil DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AuthSession {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash String @unique
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime @default(now())
+  @@index([userId, expiresAt])
 }
