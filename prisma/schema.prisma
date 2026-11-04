@@ -42,19 +42,29 @@ model MentorProfile {
 }
 
 model MentorSession {
-  id          String              @id @default(cuid())
-  userId      String
-  mentorId    String
-  status      MentorSessionStatus @default(ACTIVE)
-  startedAt   DateTime            @default(now())
-  endedAt     DateTime?
-  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
-  mentor      MentorProfile       @relation(fields: [mentorId], references: [id])
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
+  id              String              @id @default(cuid())
+  userId          String
+  mentorId        String
+  status          MentorSessionStatus @default(ACTIVE)
+  startedAt       DateTime            @default(now())
+  endedAt         DateTime?
+  lastActivityAt  DateTime            @default(now())
+  turnCount       Int                 @default(0)
+  promptKeyUsed   String
+  recommendationType       String?
+  recommendationTopic      String?
+  recommendationReason     String?
+  recommendationInvitation String?
+  user     User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mentor   MentorProfile @relation(fields: [mentorId], references: [id])
+  messages MentorMessage[]
+  usage    OscarUsage[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId, status])
   @@index([mentorId, startedAt])
+  @@index([status, lastActivityAt])
 }
 
 model ContentItem {
@@ -84,5 +94,46 @@ model AnalyticsEvent {
   occurredAt  DateTime @default(now())
 
   @@index([eventType, occurredAt])
+  @@index([sessionId])
+}
+enum MentorMessageRole {
+  USER
+  ASSISTANT
+}
+
+model MentorPrompt {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+}
+
+model MentorMessage {
+  id         String            @id @default(cuid())
+  sessionId  String
+  role       MentorMessageRole
+  content    String            @db.Text
+  turnNumber Int
+  tokensIn   Int?
+  tokensOut  Int?
+  createdAt  DateTime          @default(now())
+  session    MentorSession     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([sessionId, createdAt])
+}
+
+model OscarUsage {
+  id                String   @id @default(cuid())
+  userId            String
+  sessionId         String
+  messageId         String?
+  model             String
+  tokensIn          Int
+  tokensOut         Int
+  costEstimateCents Int
+  createdAt         DateTime @default(now())
+  session           MentorSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
   @@index([sessionId])
 }
