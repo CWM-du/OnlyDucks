@@ -3,6 +3,7 @@ import { RecommendationService } from './recommendation-service';
 import { RecommendationRepository } from './recommendation-repository';
 import { SessionRepository } from '@/modules/mentors/session-repository';
 import { SessionNotFoundError } from '@/modules/mentors/errors';
+import { AnalyticsService } from '@/modules/analytics/analytics-service';
 import { MentorSessionStatus } from '@prisma/client';
 
 describe('RecommendationService', () => {
@@ -55,15 +56,19 @@ describe('RecommendationService', () => {
     },
   };
 
-  it('adds recommendation when session exists and is owned by user', async () => {
+  it('adds recommendation when session exists and is owned by user and tracks recommendation_displayed', async () => {
     const repo = new RecommendationRepository();
     const sessionRepo = new SessionRepository();
+    const analytics = new AnalyticsService();
 
     vi.spyOn(sessionRepo, 'ensureUser').mockResolvedValue(mockUser);
     vi.spyOn(sessionRepo, 'getSessionById').mockResolvedValue(mockSession);
     vi.spyOn(repo, 'createRecommendation').mockResolvedValue(mockRecommendation);
+    const trackRecSpy = vi
+      .spyOn(analytics, 'trackRecommendationDisplayed')
+      .mockResolvedValue({ recorded: true, id: 'event-rec-1' });
 
-    const service = new RecommendationService(repo, sessionRepo);
+    const service = new RecommendationService(repo, sessionRepo, analytics);
     const result = await service.addRecommendation('ext-user-1', {
       sessionId: 'session-cuid-1',
       contentItemId: 'content-1',
@@ -74,6 +79,9 @@ describe('RecommendationService', () => {
     expect(repo.createRecommendation).toHaveBeenCalledWith({
       sessionId: 'session-cuid-1',
       contentItemId: 'content-1',
+      notes: 'Suggested next step',
+    });
+    expect(trackRecSpy).toHaveBeenCalledWith(mockUser.id, 'session-cuid-1', 'content-1', {
       notes: 'Suggested next step',
     });
   });

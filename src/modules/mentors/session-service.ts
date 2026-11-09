@@ -1,9 +1,13 @@
 import { MentorSessionStatus } from '@prisma/client';
 import { sessionRepository, type SessionRepository } from './session-repository';
 import { InvalidSessionStateError, MentorNotFoundError, SessionNotFoundError } from './errors';
+import { analyticsService, type AnalyticsService } from '@/modules/analytics/analytics-service';
 
 export class SessionService {
-  constructor(private readonly repo: SessionRepository = sessionRepository) {}
+  constructor(
+    private readonly repo: SessionRepository = sessionRepository,
+    private readonly analytics: AnalyticsService = analyticsService,
+  ) {}
 
   async createSession(externalUserId: string, mentorSlug: string) {
     const user = await this.repo.ensureUser(externalUserId);
@@ -13,7 +17,11 @@ export class SessionService {
       throw new MentorNotFoundError(mentorSlug);
     }
 
-    return this.repo.createSessionWithConflictCheck(user.id, mentor.id);
+    const session = await this.repo.createSessionWithConflictCheck(user.id, mentor.id);
+
+    await this.analytics.trackSessionStarted(user.id, session.id, mentorSlug);
+
+    return session;
   }
 
   async getActiveSession(externalUserId: string) {
@@ -37,7 +45,18 @@ export class SessionService {
       throw new InvalidSessionStateError(session.status);
     }
 
-    return this.repo.updateSessionStatus(sessionId, targetStatus, new Date());
+    const updated = await this.repo.updateSessionStatus(sessionId, targetStatus, new Date());
+
+    if (targetStatus === MentorSessionStatus.COMPLETED) {
+      await this.analytics.trackSessionCompleted(user.id, sessionId, session.turnCount);
+    } else if (
+      targetStatus === MentorSessionStatus.FAILED ||
+      targetStatus === MentorSessionStatus.CANCELLED
+    ) {
+      await this.analytics.trackSessionFailed(user.id, sessionId, targetStatus);
+    }
+
+    return updated;
   }
 }
 

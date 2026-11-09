@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { MentorSessionStatus } from '@prisma/client';
 import { SessionService } from './session-service';
 import { SessionRepository } from './session-repository';
+import { AnalyticsService } from '@/modules/analytics/analytics-service';
 import {
   ActiveSessionConflictError,
   InvalidSessionStateError,
@@ -43,19 +44,42 @@ describe('SessionService', () => {
     messages: [],
   };
 
-  it('creates a new session successfully', async () => {
+  it('creates a new session successfully and tracks mentor_session_started', async () => {
     const repo = new SessionRepository();
+    const analytics = new AnalyticsService();
     vi.spyOn(repo, 'ensureUser').mockResolvedValue(mockUser);
     vi.spyOn(repo, 'ensureMentorProfile').mockResolvedValue(mockMentor);
     vi.spyOn(repo, 'createSessionWithConflictCheck').mockResolvedValue(mockActiveSession);
+    const trackStartedSpy = vi
+      .spyOn(analytics, 'trackSessionStarted')
+      .mockResolvedValue({ recorded: true, id: 'event-1' });
 
-    const service = new SessionService(repo);
+    const service = new SessionService(repo, analytics);
     const result = await service.createSession('ext-user-1', 'python-socratic');
 
     expect(result).toEqual(mockActiveSession);
     expect(repo.ensureUser).toHaveBeenCalledWith('ext-user-1');
     expect(repo.ensureMentorProfile).toHaveBeenCalledWith('python-socratic');
     expect(repo.createSessionWithConflictCheck).toHaveBeenCalledWith(mockUser.id, mockMentor.id);
+    expect(trackStartedSpy).toHaveBeenCalledWith(
+      mockUser.id,
+      mockActiveSession.id,
+      'python-socratic',
+    );
+  });
+
+  it('still creates session even if analytics tracking fails', async () => {
+    const repo = new SessionRepository();
+    const analytics = new AnalyticsService();
+    vi.spyOn(repo, 'ensureUser').mockResolvedValue(mockUser);
+    vi.spyOn(repo, 'ensureMentorProfile').mockResolvedValue(mockMentor);
+    vi.spyOn(repo, 'createSessionWithConflictCheck').mockResolvedValue(mockActiveSession);
+    vi.spyOn(analytics, 'trackSessionStarted').mockResolvedValue({ recorded: false });
+
+    const service = new SessionService(repo, analytics);
+    const result = await service.createSession('ext-user-1', 'python-socratic');
+
+    expect(result).toEqual(mockActiveSession);
   });
 
   it('throws MentorNotFoundError when mentor profile does not exist', async () => {
@@ -109,8 +133,9 @@ describe('SessionService', () => {
     expect(repo.getActiveSessionByUserId).toHaveBeenCalledWith(mockUser.id);
   });
 
-  it('transitions active session to completed status', async () => {
+  it('transitions active session to completed status and tracks mentor_session_completed', async () => {
     const repo = new SessionRepository();
+    const analytics = new AnalyticsService();
     vi.spyOn(repo, 'ensureUser').mockResolvedValue(mockUser);
     vi.spyOn(repo, 'getSessionById').mockResolvedValue(mockActiveSession);
     vi.spyOn(repo, 'updateSessionStatus').mockResolvedValue({
@@ -118,8 +143,11 @@ describe('SessionService', () => {
       status: MentorSessionStatus.COMPLETED,
       endedAt: new Date(),
     });
+    const trackCompletedSpy = vi
+      .spyOn(analytics, 'trackSessionCompleted')
+      .mockResolvedValue({ recorded: true, id: 'event-2' });
 
-    const service = new SessionService(repo);
+    const service = new SessionService(repo, analytics);
     const result = await service.transitionSessionStatus(
       'ext-user-1',
       'session-cuid-1',
@@ -131,6 +159,40 @@ describe('SessionService', () => {
       'session-cuid-1',
       MentorSessionStatus.COMPLETED,
       expect.any(Date),
+    );
+    expect(trackCompletedSpy).toHaveBeenCalledWith(
+      mockUser.id,
+      'session-cuid-1',
+      mockActiveSession.turnCount,
+    );
+  });
+
+  it('transitions active session to failed or cancelled status and tracks mentor_session_failed', async () => {
+    const repo = new SessionRepository();
+    const analytics = new AnalyticsService();
+    vi.spyOn(repo, 'ensureUser').mockResolvedValue(mockUser);
+    vi.spyOn(repo, 'getSessionById').mockResolvedValue(mockActiveSession);
+    vi.spyOn(repo, 'updateSessionStatus').mockResolvedValue({
+      ...mockActiveSession,
+      status: MentorSessionStatus.FAILED,
+      endedAt: new Date(),
+    });
+    const trackFailedSpy = vi
+      .spyOn(analytics, 'trackSessionFailed')
+      .mockResolvedValue({ recorded: true, id: 'event-3' });
+
+    const service = new SessionService(repo, analytics);
+    const result = await service.transitionSessionStatus(
+      'ext-user-1',
+      'session-cuid-1',
+      MentorSessionStatus.FAILED,
+    );
+
+    expect(result.status).toBe(MentorSessionStatus.FAILED);
+    expect(trackFailedSpy).toHaveBeenCalledWith(
+      mockUser.id,
+      'session-cuid-1',
+      MentorSessionStatus.FAILED,
     );
   });
 
@@ -170,4 +232,3 @@ describe('SessionService', () => {
     ).rejects.toThrow(InvalidSessionStateError);
   });
 });
-

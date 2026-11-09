@@ -4,11 +4,13 @@ import {
 } from './recommendation-repository';
 import { sessionRepository, type SessionRepository } from '@/modules/mentors/session-repository';
 import { SessionNotFoundError } from '@/modules/mentors/errors';
+import { analyticsService, type AnalyticsService } from '@/modules/analytics/analytics-service';
 
 export class RecommendationService {
   constructor(
     private readonly repo: RecommendationRepository = recommendationRepository,
     private readonly sessionRepo: SessionRepository = sessionRepository,
+    private readonly analytics: AnalyticsService = analyticsService,
   ) {}
 
   async addRecommendation(
@@ -22,7 +24,16 @@ export class RecommendationService {
       throw new SessionNotFoundError(data.sessionId);
     }
 
-    return this.repo.createRecommendation(data);
+    const recommendation = await this.repo.createRecommendation(data);
+
+    await this.analytics.trackRecommendationDisplayed(
+      user.id,
+      data.sessionId,
+      data.contentItemId,
+      data.notes ? { notes: data.notes } : undefined,
+    );
+
+    return recommendation;
   }
 
   async getSessionRecommendations(externalUserId: string, sessionId: string) {
