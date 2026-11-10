@@ -73,8 +73,9 @@ export default function ProfilePage() {
   }
 
   return (
-    <main id="main-content" tabIndex={-1} className="app-shell">
-      <a className="skip-link" href="#main-content">Skip to main content</a>
+    <>
+      <a className="skip-link" href="#page-content">Skip to main content</a>
+      <main className="app-shell">
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
         <nav className="main-nav" aria-label="Main navigation">
@@ -83,7 +84,7 @@ export default function ProfilePage() {
         <span className="environment-pill"><span className="status-dot" /> Local preview</span>
       </header>
 
-      <section className="page-intro" aria-labelledby="page-title">
+      <section id="page-content" tabIndex={-1} className="page-intro" aria-labelledby="page-title">
         <p className="eyebrow"><span className="eyebrow-line" /> YOUR DEVELOPER SPACE</p>
         <h1 id="page-title">Make it <span className="heading-accent">yours.</span></h1>
         <p className="hero-copy">Create a lightweight snapshot of what you do, what you are learning, and where you want to go next.</p>
@@ -121,5 +122,6 @@ export default function ProfilePage() {
       </div>
       <footer className="site-footer"><Link className="footer-brand" href="/">onlyducks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
     </main>
+    </>
   );
 }
