@@ -26,14 +26,24 @@ function readRoadmapProgress(value: string | null): string[] {
 export default function RoadmapPage() {
   const [completed, setCompleted] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
+  const [storageAvailable, setStorageAvailable] = useState(true);
   useEffect(() => {
-    try { setCompleted(readRoadmapProgress(window.localStorage.getItem(key))); } catch { /* Ignore unavailable local storage. */ }
+    try {
+      setCompleted(readRoadmapProgress(window.localStorage.getItem(key)));
+    } catch {
+      setStorageAvailable(false);
+    }
     setReady(true);
   }, []);
   function toggle(id: string) {
     setCompleted((current) => {
       const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
-      try { window.localStorage.setItem(key, JSON.stringify(next)); } catch { /* Progress remains available for this session. */ }
+      try {
+        window.localStorage.setItem(key, JSON.stringify(next));
+        setStorageAvailable(true);
+      } catch {
+        setStorageAvailable(false);
+      }
       return next;
     });
   }
@@ -46,7 +56,7 @@ export default function RoadmapPage() {
       <header className="topbar"><Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link><nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link nav-link-active" href="/roadmap" aria-current="page">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link></nav><span className="environment-pill"><span className="status-dot" /> Local preview</span></header>
       <section className="page-intro"><p className="eyebrow"><span className="eyebrow-line" /> A PATH YOU CAN SHAPE</p><h1>Make progress <span className="heading-accent">visible.</span></h1><p className="hero-copy">A flexible learning path from foundations to opportunities. Use it as a guide, not a deadline.</p></section>
       <section className="roadmap-progress" aria-label="Your roadmap progress">
-        <div><p className="eyebrow">YOUR CHECKLIST</p><strong aria-live="polite">{completed.length} of {total} steps completed</strong><p>Progress is stored in this browser only.</p></div>
+        <div><p className="eyebrow">YOUR CHECKLIST</p><strong aria-live="polite">{completed.length} of {total} steps completed</strong><p role="status" aria-live="polite">{storageAvailable ? 'Progress is stored in this browser only.' : "Browser storage is unavailable. Changes remain only while this page is open and will be lost when you leave or refresh."}</p></div>
         <div className="progress-meter" role="progressbar" aria-label="Roadmap completion" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent} aria-valuetext={`${completed.length} of ${total} steps completed`}><span style={{ width: percent + '%' }} /></div><strong className="progress-percent">{percent}%</strong>
       </section>
       <div className="roadmap-list">
