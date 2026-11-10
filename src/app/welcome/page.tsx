@@ -27,7 +27,7 @@ export default function WelcomePage() {
   }
   const percent = Math.round(done.length / items.length * 100);
   return (
-    <main id="main-content" className="app-shell">
+    <main id="main-content" tabIndex={-1} className="app-shell">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <header className="topbar"><Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link><nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link nav-link-active" href="/welcome" aria-current="page">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link></nav><span className="environment-pill"><span className="status-dot" /> Preview</span></header>
       <section className="welcome-hero"><p className="eyebrow"><span className="eyebrow-line" /> YOUR FIRST STEPS</p><h1>Welcome to a more <span className="heading-accent">connected</span> developer journey.</h1><p className="hero-copy">OnlyDucks connects what you want to understand with what you can do next. Start with one small action; there is no setup required for this preview.</p><div className="welcome-hero-note"><span className="welcome-note-mark">i</span><p><strong>Learn → Demonstrate → Opportunity.</strong> Explore a learning approach, turn insight into practice, and use that momentum to decide what comes next.</p></div></section>
