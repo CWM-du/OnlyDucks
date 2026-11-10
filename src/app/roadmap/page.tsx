@@ -10,12 +10,24 @@ const phases = [
   { id: 'opportunity', number: '04', title: 'Connect to opportunities', description: 'Use what you have learned to decide on a meaningful next move.', duration: 'Look outward', tasks: ['Refresh your developer profile', 'Identify a role or community to explore', 'Choose your next learning goal'] },
 ];
 const key = 'onlyducks:roadmap:v1';
+const validTaskIds = new Set(phases.flatMap((phase) => phase.tasks.map((task) => phase.id + ':' + task)));
+
+function readRoadmapProgress(value: string | null): string[] {
+  if (!value) return [];
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (!Array.isArray(parsed)) return [];
+    return [...new Set(parsed.filter((item): item is string => typeof item === 'string' && validTaskIds.has(item)))];
+  } catch {
+    return [];
+  }
+}
 
 export default function RoadmapPage() {
   const [completed, setCompleted] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    try { const value = window.localStorage.getItem(key); if (value) setCompleted(JSON.parse(value)); } catch { /* Ignore unavailable local storage. */ }
+    try { setCompleted(readRoadmapProgress(window.localStorage.getItem(key))); } catch { /* Ignore unavailable local storage. */ }
     setReady(true);
   }, []);
   function toggle(id: string) {
