@@ -36,7 +36,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <main id="main-content" className="app-shell">
+    <main id="main-content" tabIndex={-1} className="app-shell">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
@@ -68,7 +68,7 @@ export default function ProfilePage() {
           <input id="goal" className="form-control" value={profile.goal} onChange={(e) => update('goal', e.target.value)} maxLength={120} placeholder="e.g. Ship my first full-stack project" />
           <label className="field-label" htmlFor="bio">A little about you</label>
           <textarea id="bio" className="form-control form-textarea" value={profile.bio} onChange={(e) => update('bio', e.target.value)} maxLength={360} rows={4} placeholder="What motivates you to build and learn?" />
-          <div className="form-actions"><button className="button button-primary" type="submit" disabled={!ready}>Save on this device</button><button className="button button-secondary" type="button" onClick={() => { setProfile(emptyProfile); setSaved(false); window.localStorage.removeItem(storageKey); }}>Clear profile</button></div>
+          <div className="form-actions"><button className="button button-primary" type="submit" disabled={!ready}>Save on this device</button><button className="button button-secondary" type="button" onClick={() => { setProfile(emptyProfile); setSaved(false); try { window.localStorage.removeItem(storageKey); } catch { /* Keep the cleared form usable when storage is unavailable. */ } }}>Clear profile</button></div>
           <p className="form-feedback" role="status" aria-live="polite">{saved ? 'Saved in this browser.' : 'Changes are not saved until you choose Save.'}</p>
         </form>
 
