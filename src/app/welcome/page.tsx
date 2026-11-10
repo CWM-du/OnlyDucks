@@ -10,12 +10,24 @@ const items = [
   { id: 'roadmap', title: 'Choose a first milestone', detail: 'Turn a broad goal into a small, practical next step.', href: '/roadmap', action: 'Open your roadmap' },
 ];
 const key = 'onlyducks:onboarding:v1';
+const validItemIds = new Set(items.map((item) => item.id));
+
+function readOnboardingProgress(value: string | null): string[] {
+  if (!value) return [];
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (!Array.isArray(parsed)) return [];
+    return [...new Set(parsed.filter((item): item is string => typeof item === 'string' && validItemIds.has(item)))];
+  } catch {
+    return [];
+  }
+}
 
 export default function WelcomePage() {
   const [done, setDone] = useState<string[]>([]);
   const [ready, setReady] = useState(false);
   useEffect(() => {
-    try { const value = window.localStorage.getItem(key); if (value) setDone(JSON.parse(value)); } catch { /* Keep onboarding usable without storage. */ }
+    try { setDone(readOnboardingProgress(window.localStorage.getItem(key))); } catch { /* Keep onboarding usable without storage. */ }
     setReady(true);
   }, []);
   function toggle(id: string) {
