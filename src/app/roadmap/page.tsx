@@ -29,7 +29,7 @@ export default function RoadmapPage() {
   const percent = Math.round((completed.length / total) * 100);
 
   return (
-    <main id="main-content" className="app-shell">
+    <main id="main-content" tabIndex={-1} className="app-shell">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <header className="topbar"><Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link><nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link nav-link-active" href="/roadmap" aria-current="page">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link></nav><span className="environment-pill"><span className="status-dot" /> Local preview</span></header>
       <section className="page-intro"><p className="eyebrow"><span className="eyebrow-line" /> A PATH YOU CAN SHAPE</p><h1>Make progress <span className="heading-accent">visible.</span></h1><p className="hero-copy">A flexible learning path from foundations to opportunities. Use it as a guide, not a deadline.</p></section>
