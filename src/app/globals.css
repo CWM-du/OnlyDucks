@@ -400,3 +400,27 @@ h1, h2, h3, p { overflow-wrap: break-word; }
     min-height: 48px;
   }
 }
+
+
+/* DEV03: strengthen keyboard focus visibility and mobile nav focus scrolling */
+a:focus-visible,
+:where(button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline-color: var(--green);
+}
+.form-control:focus-visible,
+.roadmap-task input:focus-visible,
+.onboarding-check input:focus-visible {
+  outline-color: var(--green);
+}
+.form-control:focus-visible {
+  border-color: var(--green);
+  box-shadow: 0 0 0 1px var(--green);
+}
+@media (max-width: 620px) {
+  .main-nav {
+    scroll-padding-inline: 14px;
+  }
+  .main-nav .nav-link {
+    scroll-margin-inline: 14px;
+  }
+}
