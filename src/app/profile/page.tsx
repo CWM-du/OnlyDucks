@@ -34,33 +34,41 @@ function readProfile(value: string | null): Profile {
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
-  const [saved, setSaved] = useState(false);
-  const [saveError, setSaveError] = useState(false);
+  const [saveStatus, setSaveStatus] = useState<'unsaved' | 'saved' | 'save-error' | 'cleared' | 'clear-error' | 'storage-unavailable'>('unsaved');
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     try {
       const stored = window.localStorage.getItem(storageKey);
       if (stored) setProfile(readProfile(stored));
-    } catch { /* Keep the editable defaults if local storage is unavailable. */ }
+    } catch {
+      setSaveStatus('storage-unavailable');
+    }
     setReady(true);
   }, []);
 
   function update(field: keyof Profile, value: string) {
     setProfile((current) => ({ ...current, [field]: value }));
-    setSaved(false);
-    setSaveError(false);
+    setSaveStatus((current) => current === 'storage-unavailable' ? current : 'unsaved');
   }
 
   function saveProfile(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       window.localStorage.setItem(storageKey, JSON.stringify(profile));
-      setSaved(true);
-      setSaveError(false);
+      setSaveStatus('saved');
     } catch {
-      setSaved(false);
-      setSaveError(true);
+      setSaveStatus('save-error');
+    }
+  }
+
+  function clearProfile() {
+    setProfile(emptyProfile);
+    try {
+      window.localStorage.removeItem(storageKey);
+      setSaveStatus('cleared');
+    } catch {
+      setSaveStatus('clear-error');
     }
   }
 
@@ -97,8 +105,8 @@ export default function ProfilePage() {
           <input id="goal" className="form-control" value={profile.goal} onChange={(e) => update('goal', e.target.value)} maxLength={120} placeholder="e.g. Ship my first full-stack project" />
           <label className="field-label" htmlFor="bio">A little about you</label>
           <textarea id="bio" className="form-control form-textarea" value={profile.bio} onChange={(e) => update('bio', e.target.value)} maxLength={360} rows={4} placeholder="What motivates you to build and learn?" />
-          <div className="form-actions"><button className="button button-primary" type="submit" disabled={!ready}>Save on this device</button><button className="button button-secondary" type="button" onClick={() => { setProfile(emptyProfile); setSaved(false); try { window.localStorage.removeItem(storageKey); } catch { /* Keep the cleared form usable when storage is unavailable. */ } }}>Clear profile</button></div>
-          <p className="form-feedback" role="status" aria-live="polite">{saveError ? 'Could not save in this browser. Check available storage and try again.' : saved ? 'Saved in this browser.' : 'Changes are not saved until you choose Save.'}</p>
+          <div className="form-actions"><button className="button button-primary" type="submit" disabled={!ready}>Save on this device</button><button className="button button-secondary" type="button" onClick={clearProfile}>Clear profile</button></div>
+          <p className="form-feedback" id="profile-form-status" role="status" aria-live="polite" aria-atomic="true">{saveStatus === 'storage-unavailable' ? 'Browser storage is unavailable. Profile changes remain only while this page is open and will be lost when you leave or refresh.' : saveStatus === 'save-error' ? 'Could not save your profile in this browser. Check available storage and try again.' : saveStatus === 'clear-error' ? 'The form was cleared, but saved data could not be removed from this browser.' : saveStatus === 'cleared' ? 'Profile cleared from this browser.' : saveStatus === 'saved' ? 'Profile saved in this browser.' : 'Changes are not saved until you choose Save.'}</p>
         </form>
 
         <aside className="profile-preview" aria-label="Live profile preview">
