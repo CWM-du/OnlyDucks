@@ -311,3 +311,44 @@ h1, h2, h3, p { overflow-wrap: break-word; }
 .not-found-panel h1 { margin: 0; font: 800 clamp(2.2rem, 6vw, 3.8rem)/1.08 Manrope, sans-serif; letter-spacing: -.055em; }
 .not-found-panel .hero-copy { max-width: 520px; margin: 16px 0 25px; }
 .not-found-panel .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
+
+
+/* DEV03 polish: interaction states, readable long content and print */
+::selection { background: #d9f0df; color: var(--green-dark); }
+:where(button, .button, .nav-link, .card-link, .text-link) {
+  -webkit-tap-highlight-color: transparent;
+}
+:where(button, .button, .button-secondary, .nav-link):focus-visible {
+  outline: 3px solid #6eaa87;
+  outline-offset: 3px;
+}
+.button-secondary:hover:not(:disabled) {
+  border-color: #b9cdbd;
+  background: #f7faf7;
+}
+.onboarding-item, .module-card, .mentor-card, .roadmap-phase, .profile-form, .profile-preview {
+  min-width: 0;
+}
+.profile-preview, .mentor-detail, .roadmap-phase-heading > div {
+  overflow-wrap: anywhere;
+}
+@media (hover: hover) and (pointer: fine) {
+  .module-card, .mentor-card, .roadmap-phase, .onboarding-item {
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  .module-card:hover, .mentor-card:hover, .roadmap-phase:hover, .onboarding-item:hover {
+    border-color: #cbdacb;
+    box-shadow: 0 8px 24px #183b2410;
+    transform: translateY(-2px);
+  }
+}
+@media print {
+  body { background: white; color: black; }
+  .topbar, .site-footer, .skip-link, .hero-actions, .form-actions, .welcome-next-actions { display: none !important; }
+  .app-shell { width: 100%; max-width: none; padding: 0; }
+  .profile-preview { position: static; }
+  .roadmap-phase, .module-card, .mentor-card, .onboarding-item, .profile-form, .profile-preview {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}
