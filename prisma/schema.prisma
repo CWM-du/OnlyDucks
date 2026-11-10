@@ -20,91 +20,54 @@ enum ContentType {
   PRODUCT
 }
 
-enum MessageRole {
-  USER
-  ASSISTANT
-  SYSTEM
-}
-
 model User {
   id             String          @id @default(cuid())
   externalUserId String          @unique
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   mentorSessions MentorSession[]
-  localCredential LocalCredential?
-  authSessions   AuthSession[]
 }
 
 model MentorProfile {
-  id            String          @id @default(cuid())
-  slug          String          @unique
-  name          String
-  technology    String
+  id          String          @id @default(cuid())
+  slug        String          @unique
+  name        String
+  technology  String
   teachingStyle String
-  promptKey     String
-  isEnabled     Boolean         @default(true)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  sessions      MentorSession[]
+  promptKey   String
+  isEnabled   Boolean         @default(true)
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  sessions    MentorSession[]
 }
 
 model MentorSession {
-  id              String                  @id @default(cuid())
-  userId          String
-  mentorId        String
-  status          MentorSessionStatus     @default(ACTIVE)
-  turnCount       Int                     @default(1)
-  startedAt       DateTime                @default(now())
-  endedAt         DateTime?
-  user            User                    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  mentor          MentorProfile           @relation(fields: [mentorId], references: [id])
-  messages        MentorMessage[]
-  recommendations SessionRecommendation[]
-  createdAt       DateTime                @default(now())
-  updatedAt       DateTime                @updatedAt
+  id          String              @id @default(cuid())
+  userId      String
+  mentorId    String
+  status      MentorSessionStatus @default(ACTIVE)
+  startedAt   DateTime            @default(now())
+  endedAt     DateTime?
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mentor      MentorProfile       @relation(fields: [mentorId], references: [id])
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 
   @@index([userId, status])
   @@index([mentorId, startedAt])
 }
 
-model MentorMessage {
-  id         String        @id @default(cuid())
-  sessionId  String
-  role       MessageRole
-  content    String
-  turnNumber Int           @default(1)
-  session    MentorSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  createdAt  DateTime      @default(now())
-
-  @@index([sessionId, createdAt])
-}
-
-model SessionRecommendation {
-  id            String        @id @default(cuid())
-  sessionId     String
-  contentItemId String
-  recommendedAt DateTime      @default(now())
-  notes         String?
-  session       MentorSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
-  contentItem   ContentItem   @relation(fields: [contentItemId], references: [id], onDelete: Cascade)
-
-  @@index([sessionId])
-  @@index([contentItemId])
-}
-
 model ContentItem {
-  id              String                  @id @default(cuid())
-  externalId      String?
-  type            ContentType
-  title           String
-  summary         String?
-  destinationUrl  String
-  source          String
-  publishedAt     DateTime?
-  recommendations SessionRecommendation[]
-  createdAt       DateTime                @default(now())
-  updatedAt       DateTime                @updatedAt
+  id            String      @id @default(cuid())
+  externalId    String?
+  type          ContentType
+  title         String
+  summary       String?
+  destinationUrl String
+  source        String
+  publishedAt   DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
   @@unique([source, externalId])
   @@index([type, publishedAt])
@@ -116,33 +79,10 @@ model AnalyticsEvent {
   userId      String?
   sessionId   String?
   contentId   String?
-  destination String?
+  destination  String?
   properties  Json?
   occurredAt  DateTime @default(now())
 
   @@index([eventType, occurredAt])
   @@index([sessionId])
-}
-
-// MVP-only local identities; SSO will replace the login provider, not the User id.
-model LocalCredential {
-  userId         String    @id
-  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  passwordHash   String
-  failedAttempts Int       @default(0)
-  lockedUntil    DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-}
-
-model AuthSession {
-  id        String    @id @default(cuid())
-  userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tokenHash String    @unique
-  expiresAt DateTime
-  revokedAt DateTime?
-  createdAt DateTime  @default(now())
-
-  @@index([userId, expiresAt])
 }
