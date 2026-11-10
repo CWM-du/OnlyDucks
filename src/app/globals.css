@@ -424,3 +424,16 @@ a:focus-visible,
     scroll-margin-inline: 14px;
   }
 }
+
+
+/* DEV03 accessibility: strengthen contrast for secondary and status text */
+.module-number,
+.welcome-step-number,
+.preview-footnote,
+.disabled-action {
+  color: var(--muted);
+}
+.unavailable-label,
+.welcome-availability {
+  color: #725b36;
+}
