@@ -18,10 +18,10 @@ export default function HomePage() {
         <span className="environment-pill"><span className="status-dot" /> Preview</span>
       </header>
 
-      <section className="home-hero">
+      <section className="home-hero" aria-labelledby="page-title">
         <div className="hero-content">
           <p className="eyebrow"><span className="eyebrow-line" /> LEARN · DEMONSTRATE · DISCOVER</p>
-          <h1>Make your next<br /><span className="heading-accent">move count.</span></h1>
+          <h1 id="page-title">Make your next<br /><span className="heading-accent">move count.</span></h1>
           <p className="hero-copy">Build confidence with focused AI mentoring, discover relevant developer resources, and turn what you learn into your next opportunity.</p>
           <div className="hero-actions">
             <Link className="button button-primary" href="/mentors">Explore mentors <span aria-hidden="true">↗</span></Link>
