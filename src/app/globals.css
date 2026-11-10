@@ -214,3 +214,9 @@ h1, h2, h3, p { overflow-wrap: break-word; }
 }
 
 .card-link-disabled { color: #929d95; cursor: default; }
+
+@media (max-width: 620px) {
+  .main-nav { justify-content: flex-start; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+  .main-nav::-webkit-scrollbar { display: none; }
+  .main-nav .nav-link { flex: 0 0 auto; white-space: nowrap; }
+}
