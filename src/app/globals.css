@@ -18,7 +18,8 @@ html, body { margin: 0; min-height: 100%; }
 body { background: var(--canvas); color: var(--ink); font-family: 'DM Sans', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
 a { color: inherit; text-decoration: none; }
 button, a { -webkit-tap-highlight-color: transparent; }
-a:focus-visible { outline: 3px solid #8cbca2; outline-offset: 4px; border-radius: 5px; }\n.nav-link[aria-current="page"] { font-weight: 700; }
+a:focus-visible { outline: 3px solid #8cbca2; outline-offset: 4px; border-radius: 5px; }
+.nav-link[aria-current="page"] { font-weight: 700; }
 
 .app-shell { width: min(1160px, 100%); margin: 0 auto; padding: 0 40px 34px; }
 .topbar { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 28px; border-bottom: 1px solid var(--line); }
