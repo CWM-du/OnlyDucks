@@ -16,9 +16,9 @@ export default function FeedPage() {
         <span className="environment-pill"><span className="status-dot" /> Preview</span>
       </header>
 
-      <section className="page-intro">
+      <section className="page-intro" aria-labelledby="page-title">
         <p className="eyebrow"><span className="eyebrow-line" /> DISCOVER WHAT'S NEXT</p>
-        <div className="intro-title-row"><div><h1>Opportunity <span className="heading-accent">feed.</span></h1><p className="hero-copy">Useful knowledge, career moves, and tools for your developer journey.</p></div><span className="availability-pill"><span className="status-dot status-dot-muted" /> Content integration pending</span></div>
+        <div className="intro-title-row"><div><h1 id="page-title">Opportunity <span className="heading-accent">feed.</span></h1><p className="hero-copy">Useful knowledge, career moves, and tools for your developer journey.</p></div><span className="availability-pill"><span className="status-dot status-dot-muted" /> Content integration pending</span></div>
       </section>
 
       <section className="feed-status-panel" aria-live="polite">
