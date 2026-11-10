@@ -36,7 +36,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <main className="app-shell">
+    <main id="main-content" className="app-shell">
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
         <nav className="main-nav" aria-label="Main navigation">
