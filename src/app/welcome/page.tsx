@@ -1,58 +1,42 @@
-import Link from 'next/link';
+'use client';
 
-const steps = [
-  { number: '01', label: 'LEARN', title: 'Start with a question.', description: 'Explore mentor profiles and discover different ways to approach a technical challenge.', action: 'Meet the mentors', href: '/mentors', availability: 'Profiles preview' },
-  { number: '02', label: 'DEMONSTRATE', title: 'Turn insight into practice.', description: 'Use what you learn to shape your next step: clarify a concept, outline an approach, or plan a small project.', action: 'Practice tools coming soon', href: null, availability: 'Not available yet' },
-  { number: '03', label: 'OPPORTUNITY', title: 'Find where to go next.', description: 'Explore useful articles, developer roles, and tools from the notodoescodigo.com ecosystem when the content connection is ready.', action: 'Explore opportunities', href: '/feed', availability: 'Sources pending' },
+import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+const items = [
+  { id: 'orientation', title: 'Understand the OnlyDucks journey', detail: 'See how learning, practice and opportunity connect.', href: '/welcome', action: 'Review the journey' },
+  { id: 'mentor', title: 'Choose a learning style', detail: 'Compare mentor approaches and find one that suits your question.', href: '/mentors', action: 'Explore mentors' },
+  { id: 'profile', title: 'Create your developer snapshot', detail: 'Capture your interests and the direction you want to explore.', href: '/profile', action: 'Build your profile' },
+  { id: 'roadmap', title: 'Choose a first milestone', detail: 'Turn a broad goal into a small, practical next step.', href: '/roadmap', action: 'Open your roadmap' },
 ];
+const key = 'onlyducks:onboarding:v1';
 
 export default function WelcomePage() {
+  const [done, setDone] = useState<string[]>([]);
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    try { const value = window.localStorage.getItem(key); if (value) setDone(JSON.parse(value)); } catch { /* Keep onboarding usable without storage. */ }
+    setReady(true);
+  }, []);
+  function toggle(id: string) {
+    setDone((current) => {
+      const next = current.includes(id) ? current.filter((item) => item !== id) : [...current, id];
+      try { window.localStorage.setItem(key, JSON.stringify(next)); } catch { /* Progress remains in memory for this visit. */ }
+      return next;
+    });
+  }
+  const percent = Math.round(done.length / items.length * 100);
   return (
     <main className="app-shell">
-      <header className="topbar">
-        <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
-        <nav className="main-nav" aria-label="Main navigation">
-          <Link className="nav-link" href="/">Overview</Link>
-          <Link className="nav-link nav-link-active" href="/welcome" aria-current="page">Start here</Link>
-          <Link className="nav-link" href="/mentors">Mentors</Link>
-          <Link className="nav-link" href="/feed">Opportunities</Link>
-        </nav>
-        <span className="environment-pill"><span className="status-dot" /> Preview</span>
-      </header>
-
-      <section className="welcome-hero">
-        <p className="eyebrow"><span className="eyebrow-line" /> YOUR FIRST STEPS</p>
-        <h1>Welcome to a more <span className="heading-accent">connected</span> developer journey.</h1>
-        <p className="hero-copy">OnlyDucks brings learning, practical progress, and relevant opportunities into one clear path. Start wherever you are; take the next useful step when you're ready.</p>
-        <div className="welcome-hero-note"><span className="welcome-note-mark">i</span><p><strong>One simple idea:</strong> learning is more useful when it leads somewhere. OnlyDucks connects what you want to understand with what you can do next.</p></div>
+      <header className="topbar"><Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link><nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link nav-link-active" href="/welcome" aria-current="page">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link></nav><span className="environment-pill"><span className="status-dot" /> Preview</span></header>
+      <section className="welcome-hero"><p className="eyebrow"><span className="eyebrow-line" /> YOUR FIRST STEPS</p><h1>Welcome to a more <span className="heading-accent">connected</span> developer journey.</h1><p className="hero-copy">OnlyDucks connects what you want to understand with what you can do next. Start with one small action; there is no setup required for this preview.</p><div className="welcome-hero-note"><span className="welcome-note-mark">i</span><p><strong>Learn → Demonstrate → Opportunity.</strong> Explore a learning approach, turn insight into practice, and use that momentum to decide what comes next.</p></div></section>
+      <section className="onboarding-checklist" aria-labelledby="checklist-title">
+        <div className="section-heading"><div><p className="eyebrow">YOUR STARTING CHECKLIST</p><h2 id="checklist-title">Make this space yours.</h2></div><span className="section-note">{done.length} of {items.length} completed</span></div>
+        <div className="onboarding-progress"><div className="progress-meter" role="progressbar" aria-label="Onboarding progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={percent}><span style={{ width: percent + '%' }} /></div><strong>{percent}%</strong></div>
+        <div className="onboarding-list">{items.map((item, index) => <article className={'onboarding-item' + (done.includes(item.id) ? ' onboarding-item-done' : '')} key={item.id}><label className="onboarding-check"><input type="checkbox" checked={done.includes(item.id)} onChange={() => toggle(item.id)} disabled={!ready} /><span className="onboarding-item-copy"><span className="onboarding-index">STEP 0{index + 1}</span><strong>{item.title}</strong><span>{item.detail}</span></span></label><Link className="card-link" href={item.href}>{item.action} <span aria-hidden="true">→</span></Link></article>)}</div>
+        <p className="local-data-note" role="note">Checklist progress is stored in this browser only. It is not synced to an account.</p>
       </section>
-
-      <section className="welcome-path" aria-labelledby="welcome-path-title">
-        <div className="section-heading">
-          <div><p className="eyebrow">THE ONLYDUCKS LOOP</p><h2 id="welcome-path-title">Three steps. One continuous journey.</h2></div>
-          <span className="section-note">Learn → Demonstrate → Opportunity</span>
-        </div>
-        <div className="welcome-steps">
-          {steps.map((step) => (
-            <article className="welcome-step-card" key={step.number}>
-              <div className="welcome-step-top"><span className="welcome-step-number">{step.number}</span><span className="welcome-step-label">{step.label}</span></div>
-              <h3>{step.title}</h3>
-              <p>{step.description}</p>
-              <div className="welcome-step-bottom"><span className="welcome-availability">{step.availability}</span>{step.href ? <Link className="card-link" href={step.href}>{step.action} <span aria-hidden="true">→</span></Link> : <span className="card-link card-link-disabled" aria-disabled="true">{step.action}</span>}</div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="welcome-next" aria-labelledby="welcome-next-title">
-        <div><p className="eyebrow">READY WHEN YOU ARE</p><h2 id="welcome-next-title">Choose a useful first step.</h2><p>There is no setup required for this preview. Explore what is available today and come back as more connections are enabled.</p></div>
-        <div className="welcome-next-actions"><Link className="button button-primary" href="/mentors">Explore mentor profiles <span aria-hidden="true">↗</span></Link><Link className="text-link" href="/">Back to overview <span aria-hidden="true">→</span></Link></div>
-      </section>
-
-      <section className="welcome-boundary" aria-label="Feature availability">
-        <strong>What is available in this preview?</strong>
-        <p>You can explore the product journey and mentor profile previews. Live mentor conversations, personalized progress tracking, and connected articles, jobs, or products are not enabled yet. We will make those available states explicit rather than showing sample activity as real.</p>
-      </section>
+      <section className="welcome-boundary"><strong>What is live in this preview?</strong><p>You can explore the interface, save a local profile and track a personal checklist. Mentor conversations, account sync, personalized recommendations and connected articles, jobs or products are not enabled yet.</p></section>
       <footer className="site-footer"><Link className="footer-brand" href="/">onlyducks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
     </main>
   );
