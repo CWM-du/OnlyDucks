@@ -3,12 +3,12 @@ import Link from 'next/link';
 const modules = [
   { number: '01', title: 'Learn with a mentor', description: 'Explore different ways to approach a technical challenge.', href: '/mentors', action: 'Explore mentors', status: 'Profiles preview' },
   { number: '02', title: 'Find your next opportunity', description: 'A single place for useful articles, roles, and developer products.', href: '/feed', action: 'Explore the feed', status: 'Sources pending' },
-  { number: '03', title: 'Turn learning into action', description: 'Move from a new concept to a practical next step.', href: '/mentors', action: 'See learning paths', status: 'In development' },
+  { number: '03', title: 'Turn learning into action', description: 'Move from a new concept to a practical next step.', href: '/roadmap', action: 'See learning paths', status: 'In development' },
 ];
 
 export default function HomePage() {
   return (
-    <main id="main-content" className="app-shell">
+    <main id="main-content" tabIndex={-1} className="app-shell">
       <a className="skip-link" href="#main-content">Skip to main content</a>
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
