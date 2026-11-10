@@ -352,3 +352,51 @@ h1, h2, h3, p { overflow-wrap: break-word; }
     box-shadow: none;
   }
 }
+
+
+/* DEV03: consistent form controls and touch targets */
+.form-control {
+  min-width: 0;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+.form-control:hover:not(:disabled) {
+  border-color: #b8cbbd;
+}
+.form-control:focus-visible {
+  border-color: #6eaa87;
+  box-shadow: 0 0 0 1px #6eaa87;
+}
+.form-control:disabled {
+  background: #f3f5f2;
+  color: #87918b;
+  cursor: not-allowed;
+}
+.form-actions .button,
+.onboarding-item .card-link {
+  min-height: 44px;
+}
+.onboarding-check,
+.roadmap-task {
+  min-height: 44px;
+}
+.onboarding-check input,
+.roadmap-task input {
+  width: 20px;
+  height: 20px;
+}
+@media (max-width: 620px) {
+  .form-control {
+    min-height: 48px;
+    font-size: 16px;
+  }
+  .form-textarea {
+    min-height: 120px;
+  }
+  .form-actions {
+    align-items: stretch;
+  }
+  .form-actions .button {
+    flex: 1 1 100%;
+    min-height: 48px;
+  }
+}
