@@ -8,7 +8,7 @@ const categories = [
 
 export default function FeedPage() {
   return (
-    <main className="app-shell">
+    <main id="main-content" className="app-shell">
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
         <nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link nav-link-active" href="/feed" aria-current="page">Opportunities</Link></nav>
