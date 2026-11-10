@@ -16,10 +16,10 @@ export default function NotFound() {
         </nav>
         <span className="environment-pill"><span className="status-dot" /> Preview</span>
       </header>
-      <section className="not-found-panel">
+      <section className="not-found-panel" aria-labelledby="page-title">
         <p className="eyebrow"><span className="eyebrow-line" /> PAGE NOT FOUND</p>
         <p className="not-found-code" aria-hidden="true">404</p>
-        <h1>This page is <span className="heading-accent">off the map.</span></h1>
+        <h1 id="page-title">This page is <span className="heading-accent">off the map.</span></h1>
         <p className="hero-copy">The address may have changed, or the page may not be part of this preview yet.</p>
         <div className="hero-actions"><Link className="button button-primary" href="/">Back to overview <span aria-hidden="true">→</span></Link><Link className="text-link" href="/welcome">Start with the guide</Link></div>
       </section>
