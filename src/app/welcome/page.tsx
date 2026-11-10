@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 const steps = [
   { number: '01', label: 'LEARN', title: 'Start with a question.', description: 'Explore mentor profiles and discover different ways to approach a technical challenge.', action: 'Meet the mentors', href: '/mentors', availability: 'Profiles preview' },
-  { number: '02', label: 'DEMONSTRATE', title: 'Turn insight into practice.', description: 'Use what you learn to shape your next step: clarify a concept, outline an approach, or plan a small project.', action: 'See the learning approach', href: '/', availability: 'Guidance preview' },
+  { number: '02', label: 'DEMONSTRATE', title: 'Turn insight into practice.', description: 'Use what you learn to shape your next step: clarify a concept, outline an approach, or plan a small project.', action: 'Practice tools coming soon', href: null, availability: 'Not available yet' },
   { number: '03', label: 'OPPORTUNITY', title: 'Find where to go next.', description: 'Explore useful articles, developer roles, and tools from the notodoescodigo.com ecosystem when the content connection is ready.', action: 'Explore opportunities', href: '/feed', availability: 'Sources pending' },
 ];
 
@@ -13,6 +13,7 @@ export default function WelcomePage() {
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
         <nav className="main-nav" aria-label="Main navigation">
           <Link className="nav-link" href="/">Overview</Link>
+          <Link className="nav-link nav-link-active" href="/welcome" aria-current="page">Getting started</Link>
           <Link className="nav-link" href="/mentors">Mentors</Link>
           <Link className="nav-link" href="/feed">Opportunities</Link>
         </nav>
@@ -37,7 +38,7 @@ export default function WelcomePage() {
               <div className="welcome-step-top"><span className="welcome-step-number">{step.number}</span><span className="welcome-step-label">{step.label}</span></div>
               <h3>{step.title}</h3>
               <p>{step.description}</p>
-              <div className="welcome-step-bottom"><span className="welcome-availability">{step.availability}</span><Link className="card-link" href={step.href}>{step.action} <span aria-hidden="true">→</span></Link></div>
+              <div className="welcome-step-bottom"><span className="welcome-availability">{step.availability}</span>{step.href ? <Link className="card-link" href={step.href}>{step.action} <span aria-hidden="true">→</span></Link> : <span className="card-link card-link-disabled" aria-disabled="true">{step.action}</span>}</div>
             </article>
           ))}
         </div>
