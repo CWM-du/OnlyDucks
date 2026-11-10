@@ -8,15 +8,16 @@ const categories = [
 
 export default function FeedPage() {
   return (
-    <main id="main-content" tabIndex={-1} className="app-shell">
-      <a className="skip-link" href="#main-content">Skip to main content</a>
+    <>
+      <a className="skip-link" href="#page-content">Skip to main content</a>
+      <main className="app-shell">
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
         <nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link nav-link-active" href="/feed" aria-current="page">Opportunities</Link></nav>
         <span className="environment-pill"><span className="status-dot" /> Preview</span>
       </header>
 
-      <section className="page-intro" aria-labelledby="page-title">
+      <section id="page-content" tabIndex={-1} className="page-intro" aria-labelledby="page-title">
         <p className="eyebrow"><span className="eyebrow-line" /> DISCOVER WHAT'S NEXT</p>
         <div className="intro-title-row"><div><h1 id="page-title">Opportunity <span className="heading-accent">feed.</span></h1><p className="hero-copy">Useful knowledge, career moves, and tools for your developer journey.</p></div><span className="availability-pill"><span className="status-dot status-dot-muted" /> Content integration pending</span></div>
       </section>
@@ -44,5 +45,6 @@ export default function FeedPage() {
       <div className="page-bottom-nav"><Link className="text-link" href="/mentors">Explore Ducky Mentors <span aria-hidden="true">→</span></Link><Link className="text-link" href="/">Back to overview <span aria-hidden="true">→</span></Link></div>
       <footer className="site-footer"><Link className="footer-brand" href="/">onlyducks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
     </main>
+    </>
   );
 }
