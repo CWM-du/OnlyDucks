@@ -12,7 +12,7 @@ export default function HomePage() {
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
         <nav className="main-nav" aria-label="Main navigation">
-          <Link className="nav-link nav-link-active" href="/">Overview</Link>
+          <Link className="nav-link nav-link-active" href="/" aria-current="page">Overview</Link>
           <Link className="nav-link" href="/mentors">Mentors</Link>
           <Link className="nav-link" href="/feed">Opportunities</Link>
         </nav>
