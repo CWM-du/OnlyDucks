@@ -301,3 +301,7 @@ h1, h2, h3, p { overflow-wrap: break-word; }
 @media (prefers-reduced-motion: reduce) {
   .progress-meter span { transition: none; }
 }
+
+.skip-link { position: absolute; z-index: 100; top: 8px; left: 8px; padding: 11px 15px; border-radius: 8px; background: var(--green-dark); color: white; transform: translateY(-160%); }
+.skip-link:focus { transform: translateY(0); }
+:where(button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 3px solid #8cbca2; outline-offset: 3px; }
