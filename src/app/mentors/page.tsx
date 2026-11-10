@@ -11,7 +11,7 @@ export default function MentorsPage() {
     <main className="app-shell">
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
-        <nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link nav-link-active" href="/mentors">Mentors</Link><Link className="nav-link" href="/feed">Opportunities</Link></nav>
+        <nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link nav-link-active" href="/mentors" aria-current="page">Mentors</Link><Link className="nav-link" href="/feed">Opportunities</Link></nav>
         <span className="environment-pill"><span className="status-dot" /> Preview</span>
       </header>
 
