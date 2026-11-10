@@ -305,3 +305,9 @@ h1, h2, h3, p { overflow-wrap: break-word; }
 .skip-link { position: absolute; z-index: 100; top: 8px; left: 8px; padding: 11px 15px; border-radius: 8px; background: var(--green-dark); color: white; transform: translateY(-160%); }
 .skip-link:focus { transform: translateY(0); }
 :where(button, input, select, textarea, summary, [tabindex]):focus-visible { outline: 3px solid #8cbca2; outline-offset: 3px; }
+
+.not-found-panel { max-width: 720px; margin: 9vh auto 12vh; padding: clamp(24px, 6vw, 56px); border: 1px solid var(--line); border-radius: 16px; background: white; }
+.not-found-code { margin: 22px 0 4px; color: #dce8df; font: 800 clamp(4.5rem, 16vw, 8rem)/.95 Manrope, sans-serif; letter-spacing: -.08em; }
+.not-found-panel h1 { margin: 0; font: 800 clamp(2.2rem, 6vw, 3.8rem)/1.08 Manrope, sans-serif; letter-spacing: -.055em; }
+.not-found-panel .hero-copy { max-width: 520px; margin: 16px 0 25px; }
+.not-found-panel .hero-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 18px; }
