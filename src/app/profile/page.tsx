@@ -6,16 +6,42 @@ import { useEffect, useState } from 'react';
 type Profile = { displayName: string; role: string; level: string; interests: string; goal: string; bio: string };
 const emptyProfile: Profile = { displayName: '', role: '', level: 'Exploring', interests: '', goal: '', bio: '' };
 const storageKey = 'onlyducks:developer-profile:v1';
+const experienceLevels = ['Exploring', 'Beginner', 'Intermediate', 'Advanced', 'Experienced professional'];
+
+function readProfile(value: string | null): Profile {
+  if (!value) return emptyProfile;
+  try {
+    const parsed: unknown = JSON.parse(value);
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return emptyProfile;
+    const candidate = parsed as Record<string, unknown>;
+    const readText = (field: keyof Omit<Profile, 'level'>, maxLength: number) =>
+      typeof candidate[field] === 'string' ? (candidate[field] as string).slice(0, maxLength) : '';
+    const level = typeof candidate.level === 'string' && experienceLevels.includes(candidate.level)
+      ? candidate.level
+      : emptyProfile.level;
+    return {
+      displayName: readText('displayName', 60),
+      role: readText('role', 80),
+      level,
+      interests: readText('interests', 180),
+      goal: readText('goal', 120),
+      bio: readText('bio', 360),
+    };
+  } catch {
+    return emptyProfile;
+  }
+}
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile>(emptyProfile);
   const [saved, setSaved] = useState(false);
+  const [saveError, setSaveError] = useState(false);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     try {
       const stored = window.localStorage.getItem(storageKey);
-      if (stored) setProfile({ ...emptyProfile, ...JSON.parse(stored) });
+      if (stored) setProfile(readProfile(stored));
     } catch { /* Keep the editable defaults if local storage is unavailable. */ }
     setReady(true);
   }, []);
@@ -23,6 +49,7 @@ export default function ProfilePage() {
   function update(field: keyof Profile, value: string) {
     setProfile((current) => ({ ...current, [field]: value }));
     setSaved(false);
+    setSaveError(false);
   }
 
   function saveProfile(event: React.FormEvent<HTMLFormElement>) {
@@ -30,8 +57,10 @@ export default function ProfilePage() {
     try {
       window.localStorage.setItem(storageKey, JSON.stringify(profile));
       setSaved(true);
+      setSaveError(false);
     } catch {
       setSaved(false);
+      setSaveError(true);
     }
   }
 
@@ -69,7 +98,7 @@ export default function ProfilePage() {
           <label className="field-label" htmlFor="bio">A little about you</label>
           <textarea id="bio" className="form-control form-textarea" value={profile.bio} onChange={(e) => update('bio', e.target.value)} maxLength={360} rows={4} placeholder="What motivates you to build and learn?" />
           <div className="form-actions"><button className="button button-primary" type="submit" disabled={!ready}>Save on this device</button><button className="button button-secondary" type="button" onClick={() => { setProfile(emptyProfile); setSaved(false); try { window.localStorage.removeItem(storageKey); } catch { /* Keep the cleared form usable when storage is unavailable. */ } }}>Clear profile</button></div>
-          <p className="form-feedback" role="status" aria-live="polite">{saved ? 'Saved in this browser.' : 'Changes are not saved until you choose Save.'}</p>
+          <p className="form-feedback" role="status" aria-live="polite">{saveError ? 'Could not save in this browser. Check available storage and try again.' : saved ? 'Saved in this browser.' : 'Changes are not saved until you choose Save.'}</p>
         </form>
 
         <aside className="profile-preview" aria-label="Live profile preview">
