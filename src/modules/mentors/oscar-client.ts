@@ -14,5 +14,6 @@ type OscarResponse = {
  * before implementing. Keep all calls server-side.
  */
 export async function sendMessageToOscar(_input: OscarRequest): Promise<OscarResponse> {
+  void _input;
   throw new Error('Oscar API integration is not configured.');
 }
