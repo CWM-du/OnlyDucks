@@ -48,6 +48,7 @@ export default function DemoPage() {
                 <div className="module-card-top"><span className="module-number">{stage.number}</span><span className="module-status">{stage.status}</span></div>
                 <h3>{stage.title}</h3>
                 <p>{stage.detail}</p>
+                <Link className="text-link demo-stage-link" href={stage.href}>{stage.action} <span aria-hidden="true">→</span></Link>
               </article>
             ))}
           </div>
