@@ -1,42 +1,68 @@
 import Link from 'next/link';
 
+const modules = [
+  { number: '01', title: 'Learn with a mentor', description: 'Explore different ways to approach a technical challenge.', href: '/mentors', action: 'Explore mentors', status: 'Profiles preview' },
+  { number: '02', title: 'Find your next opportunity', description: 'A single place for useful articles, roles, and developer products.', href: '/feed', action: 'Explore the feed', status: 'Sources pending' },
+  { number: '03', title: 'Turn learning into action', description: 'Move from a new concept to a practical next step.', href: '/roadmap', action: 'See learning paths', status: 'In development' },
+];
+
 export default function HomePage() {
   return (
-    <main className="page-shell">
-      <header className="site-header">
-        <Link className="brand" href="/">OnlyDucks</Link>
-        <span className="status-label">Pilot scaffold</span>
+    <>
+      <a className="skip-link" href="#page-content">Skip to main content</a>
+      <main className="app-shell">
+      <header className="topbar">
+        <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
+        <nav className="main-nav" aria-label="Main navigation">
+          <Link className="nav-link nav-link-active" href="/" aria-current="page">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link>
+        </nav>
+        <span className="environment-pill"><span className="status-dot" /> Preview</span>
       </header>
-      <section className="hero">
-        <p className="eyebrow">LEARN · BUILD · DISCOVER</p>
-        <h1>A clearer path from learning to opportunity.</h1>
-        <p className="hero-copy">
-          Explore developer resources and AI mentoring in one focused workspace.
-          External integrations must be configured before this scaffold is pilot-ready.
-        </p>
-        <div className="action-row">
-          <Link className="primary-button" href="/mentors">Explore mentors</Link>
-          <Link className="secondary-button" href="/feed">View opportunities</Link>
+
+      <section id="page-content" tabIndex={-1} className="home-hero" aria-labelledby="page-title">
+        <div className="hero-content">
+          <p className="eyebrow"><span className="eyebrow-line" /> LEARN · DEMONSTRATE · DISCOVER</p>
+          <h1 id="page-title">Make your next<br /><span className="heading-accent">move count.</span></h1>
+          <p className="hero-copy">Build confidence with focused AI mentoring, discover relevant developer resources, and turn what you learn into your next opportunity.</p>
+          <div className="hero-actions">
+            <Link className="button button-primary" href="/mentors">Explore mentors <span aria-hidden="true">↗</span></Link>
+            <Link className="text-link" href="/feed">Browse opportunities <span aria-hidden="true">→</span></Link>
+            <Link className="text-link" href="/welcome">How OnlyDucks works <span aria-hidden="true">→</span></Link>
+          </div>
+        </div>
+        <aside className="hero-aside" aria-label="Product approach">
+          <div className="orbit orbit-outer" /><div className="orbit orbit-inner" />
+          <div className="orbit-core"><span>OD</span></div>
+          <div className="orbit-label orbit-label-top">LEARN</div>
+          <div className="orbit-label orbit-label-right">BUILD</div>
+          <div className="orbit-label orbit-label-bottom">MOVE</div>
+          <p className="orbit-caption">Small steps.<br /><strong>Real momentum.</strong></p>
+        </aside>
+      </section>
+
+      <section className="section-block" aria-labelledby="path-heading">
+        <div className="section-heading">
+          <div><p className="eyebrow">YOUR WORKSPACE</p><h2 id="path-heading">From curiosity to opportunity.</h2></div>
+          <span className="section-note">The OnlyDucks journey</span>
+        </div>
+        <div className="module-grid">
+          {modules.map((module) => (
+            <article className="module-card" key={module.number}>
+              <div className="module-card-top"><span className="module-number">{module.number}</span><span className="module-status">{module.status}</span></div>
+              <h3>{module.title}</h3>
+              <p>{module.description}</p>
+              <Link className="card-link" href={module.href}>{module.action} <span aria-hidden="true">→</span></Link>
+            </article>
+          ))}
         </div>
       </section>
-      <section className="feature-grid" aria-label="Core modules">
-        <article className="feature-card">
-          <h2>Ducky Mentors</h2>
-          <p>Mentor profiles and conversation flows, backed by the configured Oscar API.</p>
-        </article>
-        <article className="feature-card">
-          <h2>Opportunity feed</h2>
-          <p>Articles, jobs, and products from approved notodoescodigo.com sources.</p>
-        </article>
-        <article className="feature-card">
-          <h2>Measurable next steps</h2>
-          <p>Recommendations and outbound events designed to make referrals inspectable.</p>
-        </article>
+
+      <section className="notice-panel" aria-label="Preview environment notice">
+        <span className="notice-icon" aria-hidden="true">i</span>
+        <div><strong>You&apos;re viewing an early product preview.</strong><p>Mentor conversations, shared sign-in, and live content sources are not available yet. We’ll label each feature clearly until its integration is ready.</p></div>
       </section>
-      <footer className="site-footer">
-        Initial development scaffold — not production-ready until integrations, security,
-        and pilot acceptance tests are complete.
-      </footer>
+      <footer className="site-footer"><Link className="footer-brand" href="/">onlyducks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
     </main>
+    </>
   );
 }
