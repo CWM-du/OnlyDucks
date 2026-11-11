@@ -36,6 +36,15 @@
     "prettier": "^3.6.0",
     "prisma": "^6.19.0",
     "typescript": "^5.9.0",
-    "vitest": "^3.2.0"
+    "vitest": "5.1.0"
+  },
+  "overrides": {
+    "postcss": "8.5.32",
+    "@typescript-eslint/typescript-estree": {
+      "minimatch": "11.0.8"
+    },
+    "@prisma/config": {
+      "deepmerge-ts": "8.0.0"
+    }
   }
 }
