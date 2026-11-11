@@ -13,7 +13,7 @@ export default function FeedPage() {
       <main className="app-shell">
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
-        <nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/agent">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link nav-link-active" href="/feed" aria-current="page">Opportunities</Link></nav>
+        <nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/agent">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link><Link className="nav-link" href="/demo">Live demo</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link nav-link-active" href="/feed" aria-current="page">Opportunities</Link></nav>
         <span className="environment-pill"><span className="status-dot" /> Preview</span>
       </header>
 
@@ -24,8 +24,9 @@ export default function FeedPage() {
 
       <section className="feed-status-panel" aria-live="polite">
         <div className="status-symbol" aria-hidden="true">⌁</div>
-        <div className="feed-status-copy"><strong>Your feed is being connected.</strong><p>Live articles, job listings, and products will appear here once the approved notodoescodigo.com content source is configured. Nothing below is presented as live content.</p></div>
-        <span className="status-tag">Not connected</span>
+        <div className="feed-status-copy"><strong>Your feed is being connected.</strong><p>The public notodoescodigo.com blog is available now. OnlyDucks does not yet consume an approved read-only feed/API, and live job and product sources have not been confirmed. Nothing below is presented as synced content.</p></div>
+        <span className="status-tag">External source available</span>
+        <a className="button button-secondary feed-live-source-link" href="https://www.notodoescodigo.com/blog/" target="_blank" rel="noreferrer">Open the live blog <span aria-hidden="true">↗</span></a>
       </section>
 
       <section className="section-block feed-section" aria-labelledby="categories-heading">
