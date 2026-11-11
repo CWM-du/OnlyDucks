@@ -59,7 +59,7 @@ export default function HomePage() {
 
       <section className="notice-panel" aria-label="Preview environment notice">
         <span className="notice-icon" aria-hidden="true">i</span>
-        <div><strong>You're viewing an early product preview.</strong><p>Mentor conversations, shared sign-in, and live content sources are not available yet. We’ll label each feature clearly until its integration is ready.</p></div>
+        <div><strong>You&apos;re viewing an early product preview.</strong><p>Mentor conversations, shared sign-in, and live content sources are not available yet. We’ll label each feature clearly until its integration is ready.</p></div>
       </section>
       <footer className="site-footer"><Link className="footer-brand" href="/">onlyducks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
     </main>

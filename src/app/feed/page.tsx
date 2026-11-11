@@ -18,7 +18,7 @@ export default function FeedPage() {
       </header>
 
       <section id="page-content" tabIndex={-1} className="page-intro" aria-labelledby="page-title">
-        <p className="eyebrow"><span className="eyebrow-line" /> DISCOVER WHAT'S NEXT</p>
+        <p className="eyebrow"><span className="eyebrow-line" /> DISCOVER WHAT&apos;S NEXT</p>
         <div className="intro-title-row"><div><h1 id="page-title">Opportunity <span className="heading-accent">feed.</span></h1><p className="hero-copy">Useful knowledge, career moves, and tools for your developer journey.</p></div><span className="availability-pill"><span className="status-dot status-dot-muted" /> Content integration pending</span></div>
       </section>
 
