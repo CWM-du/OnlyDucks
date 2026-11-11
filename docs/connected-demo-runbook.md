@@ -74,3 +74,19 @@ Before inviting external demo users, verify:
 ## External deployment connections
 
 Vercel hosting and managed PostgreSQL can be connected to automate preview deployments and database provisioning. Those provider connections have not been made from this repository; connect the selected accounts and configure the secrets before requesting a deployment. Do not commit credentials or ask a public preview deployment to use production data.
+
+## Guided demo acceptance sequence
+
+Run this only in an isolated staging environment with a dedicated demo account and non-production data:
+
+1. Open `/demo`; the application health indicator should report that the API is reachable.
+2. Sign in with the operator-provisioned demo credentials.
+3. Confirm that the identity panel shows the local issuer and does not describe it as shared SSO.
+4. Select one mentor profile and create a session.
+5. Confirm that the returned session ID and mentor are displayed.
+6. Complete the session and confirm the UI returns to the session-creation state.
+7. Sign out and confirm that the authenticated identity is no longer displayed.
+8. Open `/agent` and demonstrate blueprint creation/refinement; explicitly identify it as deterministic local preview, not live AI.
+9. Open `/feed` and follow the external public blog link. Do not imply that articles, jobs, or products are synchronized into OnlyDucks.
+
+Record the staging URL, commit SHA, test account provisioning date, CI run, and any failed steps in the demo handover. Never record the demo password.
