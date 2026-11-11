@@ -522,3 +522,15 @@ a:focus-visible,
   .blueprint-steps { padding-right: 15px; padding-left: 15px; }
   .agent-refine-row { flex-direction: column; }
 }
+
+.agent-page button:focus-visible,
+.agent-page input:focus-visible,
+.agent-page textarea:focus-visible {
+  outline: 3px solid #8cbca2;
+  outline-offset: 3px;
+}
+.agent-page button { font-family: 'DM Sans', sans-serif; }
+@media (max-width: 620px) {
+  .main-nav { justify-content: flex-start; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; }
+  .nav-link { flex: 0 0 auto; }
+}
