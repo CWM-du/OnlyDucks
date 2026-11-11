@@ -604,3 +604,6 @@ a:focus-visible,
   .demo-status-strip { align-items: flex-start; flex-wrap: wrap; }
   .demo-status-strip > span:last-child { width: 100%; margin-left: 18px; }
 }
+
+.feed-live-source-link { flex: 0 0 auto; white-space: nowrap; }
+@media (max-width: 620px) { .feed-live-source-link { margin-left: 60px; } }
