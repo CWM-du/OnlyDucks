@@ -166,6 +166,9 @@ export default function AgentPage() {
             <strong>Replaceable demo environment.</strong>
             <span>This workspace uses a local deterministic adapter. It does not call an AI model, create a mentor session, write to the database, or sync with your account. The adapter can be replaced when Oscar API, SSO, and session services are ready.</span>
           </div>
+          <div className="agent-demo-actions">
+            <Link className="button button-secondary" href="/demo">Try the connected demo <span aria-hidden="true">→</span></Link>
+          </div>
         </section>
       </main>
     </>
