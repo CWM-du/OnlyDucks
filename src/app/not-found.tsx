@@ -10,7 +10,7 @@ export default function NotFound() {
         <nav className="main-nav" aria-label="Main navigation">
           <Link className="nav-link" href="/">Overview</Link>
           <Link className="nav-link" href="/welcome">Start here</Link>
-          <Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/agent">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link>
+          <Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/agent">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link><Link className="nav-link" href="/demo">Live demo</Link>
           <Link className="nav-link" href="/roadmap">Roadmap</Link>
           <Link className="nav-link" href="/profile">Profile</Link>
           <Link className="nav-link" href="/feed">Opportunities</Link>
