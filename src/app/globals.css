@@ -560,3 +560,5 @@ a:focus-visible,
   .sandbox-card { min-height: 210px; padding: 18px; }
   .sandbox-footer-actions { align-items: flex-start; flex-direction: column; gap: 16px; }
 }
+
+.agent-demo-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
