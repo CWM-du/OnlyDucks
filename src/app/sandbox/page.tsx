@@ -13,7 +13,7 @@ export default function SandboxPage() {
             <Link className="nav-link" href="/welcome">Start here</Link>
             <Link className="nav-link" href="/mentors">Mentors</Link>
             <Link className="nav-link" href="/agent">Agent</Link>
-            <Link className="nav-link" href="/sandbox" aria-current="page">Sandbox</Link>
+            <Link className="nav-link" href="/sandbox" aria-current="page">Sandbox</Link><Link className="nav-link" href="/demo">Live demo</Link>
             <Link className="nav-link" href="/roadmap">Roadmap</Link>
             <Link className="nav-link" href="/profile">Profile</Link>
             <Link className="nav-link" href="/feed">Opportunities</Link>
