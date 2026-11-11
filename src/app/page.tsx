@@ -14,7 +14,7 @@ export default function HomePage() {
       <header className="topbar">
         <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
         <nav className="main-nav" aria-label="Main navigation">
-          <Link className="nav-link nav-link-active" href="/" aria-current="page">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/agent">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link>
+          <Link className="nav-link nav-link-active" href="/" aria-current="page">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/agent">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link><Link className="nav-link" href="/demo">Live demo</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link>
         </nav>
         <span className="environment-pill"><span className="status-dot" /> Preview</span>
       </header>
@@ -25,7 +25,7 @@ export default function HomePage() {
           <h1 id="page-title">Make your next<br /><span className="heading-accent">move count.</span></h1>
           <p className="hero-copy">Build confidence with focused AI mentoring, discover relevant developer resources, and turn what you learn into your next opportunity.</p>
           <div className="hero-actions">
-            <Link className="button button-primary" href="/mentors">Explore mentors <span aria-hidden="true">↗</span></Link>
+            <Link className="button button-primary" href="/demo">Start guided demo <span aria-hidden="true">↗</span></Link><Link className="text-link" href="/mentors">Explore mentors <span aria-hidden="true">→</span></Link>
             <Link className="text-link" href="/feed">Browse opportunities <span aria-hidden="true">→</span></Link>
             <Link className="text-link" href="/welcome">How OnlyDucks works <span aria-hidden="true">→</span></Link>
           </div>
