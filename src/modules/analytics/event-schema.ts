@@ -33,8 +33,7 @@ export const publicAnalyticsEventSchema = z.object({
   eventType: z.enum(['recommendation_displayed', 'outbound_click']),
   sessionId: z.string().optional(),
   contentId: z.string().optional(),
-  source: z.string().optional(),
+  source: z.string().max(100).optional(),
   destination: z.string().url().optional(),
   properties: analyticsPropertiesSchema.optional(),
-  occurredAt: z.string().datetime().optional(),
 }).strict();
