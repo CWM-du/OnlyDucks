@@ -562,3 +562,49 @@ a:focus-visible,
 }
 
 .agent-demo-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+
+/* DEV03 connected demo walkthrough */
+.demo-page { padding: 56px 0 42px; }
+.demo-page > h1 { max-width: 760px; margin: 0; font: 700 clamp(2.8rem, 5.5vw, 4.5rem)/1.04 Manrope, sans-serif; letter-spacing: -.07em; }
+.demo-page > .hero-copy { max-width: 760px; margin: 18px 0 0; }
+.demo-status-strip { display: flex; align-items: center; gap: 10px; margin: 26px 0 18px; padding: 12px 15px; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--muted); font-size: .75rem; }
+.demo-status-strip strong { color: var(--ink); }
+.demo-status-strip > span:last-child { margin-left: auto; }
+.demo-status-dot { width: 8px; height: 8px; border-radius: 50%; background: #c28b48; }
+.demo-status-dot.is-online { background: #39956c; box-shadow: 0 0 0 3px #39956c20; }
+.demo-feedback { margin: 0 0 18px; padding: 12px 15px; border: 1px solid #cddfd3; border-radius: 10px; background: #f3f8f4; color: #365a46; font-size: .78rem; line-height: 1.55; }
+.demo-flow { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.demo-step-card { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
+.demo-step-heading { display: flex; align-items: flex-start; gap: 13px; margin-bottom: 22px; }
+.demo-step-heading > span { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border-radius: 9px; background: var(--green-soft); color: var(--green-dark); font-size: .7rem; font-weight: 800; }
+.demo-step-heading .eyebrow { margin: 0 0 5px; }
+.demo-step-heading h2 { margin: 0; font: 700 1.12rem Manrope, sans-serif; }
+.demo-login-form, .demo-session-form { display: flex; flex-direction: column; gap: 10px; }
+.demo-login-form label, .demo-session-form label { color: var(--ink); font-size: .75rem; font-weight: 700; }
+.demo-login-form input, .demo-session-form select { width: 100%; min-height: 46px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: #fff; color: var(--ink); font: inherit; font-size: .84rem; }
+.demo-login-form .button, .demo-session-form .button { align-self: flex-start; margin-top: 7px; }
+.demo-help, .demo-muted { margin: 7px 0 0; color: var(--muted); font-size: .73rem; line-height: 1.6; }
+.demo-authenticated, .demo-session-card { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.demo-authenticated > strong { overflow-wrap: anywhere; font-size: .88rem; }
+.demo-authenticated > p, .demo-session-card > p { margin: 0; color: var(--muted); font-size: .75rem; line-height: 1.6; }
+.demo-connected-label { display: inline-flex; padding: 5px 9px; border-radius: 999px; background: var(--green-soft); color: var(--green-dark); font-size: .65rem; font-weight: 800; }
+.demo-session-card h3 { margin: 3px 0 0; font: 700 1.1rem Manrope, sans-serif; }
+.demo-session-card small { color: var(--muted); overflow-wrap: anywhere; font-size: .66rem; }
+.demo-agent-step { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; }
+.demo-agent-step .demo-step-heading { margin-bottom: 10px; }
+.demo-agent-step .demo-muted { max-width: 720px; margin-bottom: 16px; }
+.demo-boundary { margin-top: 18px; padding: 20px 22px; border: 1px solid var(--line); border-radius: 13px; background: #fafbf9; }
+.demo-boundary h2 { margin: 0 0 12px; font: 700 1rem Manrope, sans-serif; }
+.demo-boundary ul { display: grid; gap: 8px; margin: 0; padding-left: 20px; color: var(--muted); font-size: .74rem; line-height: 1.6; }
+.demo-boundary strong { color: var(--ink); }
+.demo-page button:focus-visible, .demo-page input:focus-visible, .demo-page select:focus-visible, .demo-page a:focus-visible { outline: 3px solid #77a98d; outline-offset: 3px; }
+@media (max-width: 680px) {
+  .demo-page { padding-top: 38px; }
+  .demo-flow { grid-template-columns: 1fr; }
+  .demo-agent-step { grid-column: auto; }
+  .demo-step-card { padding: 18px; }
+  .demo-status-strip { align-items: flex-start; flex-wrap: wrap; }
+  .demo-status-strip > span:last-child { width: 100%; margin-left: 18px; }
+}
+
+.feed-live-source-link{ flex: 0 0 auto; white-space: nowrap; }
