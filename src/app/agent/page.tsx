@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
 import { demoAgentAdapter } from '../../lib/agent/demo-adapter';
 import type { AgentBlueprint, AgentMode } from '../../lib/agent/types';
 
