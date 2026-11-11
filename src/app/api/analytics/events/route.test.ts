@@ -41,6 +41,16 @@ describe('analytics events route authorization', () => {
     expect(mocks.trackEvent).not.toHaveBeenCalled();
   });
 
+  it('rejects client-controlled event timestamps', async () => {
+    const response = await POST(new Request('https://onlyducks.test/api/analytics/events', {
+      method: 'POST',
+      headers: { origin: 'https://onlyducks.test', 'content-type': 'application/json' },
+      body: JSON.stringify({ eventType: 'outbound_click', destination: 'https://example.com', occurredAt: '2000-01-01T00:00:00.000Z' }),
+    }));
+    expect(response.status).toBe(400);
+    expect(mocks.trackEvent).not.toHaveBeenCalled();
+  });
+
   it('rejects internal mentor lifecycle events from browser clients', async () => {
     const response = await POST(new Request('https://onlyducks.test/api/analytics/events', {
       method: 'POST',
