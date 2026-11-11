@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { useMemo, useState } from 'react';
 
 const stages = [
   { number: '01', title: 'Your starting point', status: 'Browser-local preview', detail: 'Explore onboarding and a sample profile. No account or shared identity is created.', href: '/welcome', action: 'Explore onboarding' },
@@ -9,6 +12,15 @@ const stages = [
 ];
 
 export default function DemoPage() {
+  const [completed, setCompleted] = useState<string[]>([]);
+  const progress = useMemo(() => Math.round((completed.length / stages.length) * 100), [completed.length]);
+
+  function toggleStage(number: string) {
+    setCompleted((current) => current.includes(number)
+      ? current.filter((item) => item !== number)
+      : [...current, number]);
+  }
+
   return (
     <>
       <a className="skip-link" href="#page-content">Skip to main content</a>
@@ -31,26 +43,46 @@ export default function DemoPage() {
         <section id="page-content" tabIndex={-1} className="page-intro" aria-labelledby="page-title">
           <p className="eyebrow"><span className="eyebrow-line" /> PRODUCT WALKTHROUGH</p>
           <h1 id="page-title">A guided product tour, <span className="heading-accent">step by step.</span></h1>
-          <p className="hero-copy">Use this walkthrough to demonstrate the current OnlyDucks experience without presenting preview adapters as live services.</p>
+          <p className="hero-copy">A self-guided tour of the current OnlyDucks experience. Open each area, try its interactions, then mark the stage as explored.</p>
         </section>
 
         <section className="feed-status-panel" role="note">
           <div className="status-symbol" aria-hidden="true">i</div>
-          <div className="feed-status-copy"><strong>Private preview — integrations are not yet production-connected.</strong><p>This walkthrough is safe for a product review. Do not use it to collect real user data or promise live mentor sessions, shared SSO, or real-time opportunities.</p></div>
+          <div className="feed-status-copy"><strong>Private product preview — integrations are not production-connected.</strong><p>This walkthrough does not create accounts, call live mentor services, load real-time opportunities, or emit production analytics.</p></div>
           <span className="status-tag">Preview</span>
+        </section>
+
+        <section className="demo-progress-panel" aria-labelledby="demo-progress-title">
+          <div className="demo-progress-heading">
+            <div><p className="eyebrow">YOUR WALKTHROUGH</p><h2 id="demo-progress-title">Tour progress</h2></div>
+            <strong aria-live="polite">{completed.length} of {stages.length} explored</strong>
+          </div>
+          <div className="demo-progress-track" role="progressbar" aria-label="Demo walkthrough progress" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress} aria-valuetext={`${progress}% explored`}>
+            <span style={{ width: `${progress}%` }} />
+          </div>
+          <div className="demo-progress-footer">
+            <p>{progress === 100 ? 'Walkthrough complete. You have explored every available preview area.' : 'Mark each stage after exploring it. Your progress stays in this page only.'}</p>
+            <button type="button" className="agent-reset-button" onClick={() => setCompleted([])} disabled={completed.length === 0}>Reset tour</button>
+          </div>
         </section>
 
         <section className="section-block" aria-labelledby="walkthrough-title">
           <div className="section-heading"><div><p className="eyebrow">DEMO FLOW</p><h2 id="walkthrough-title">The five moments to show</h2></div><span className="section-note">Current capability</span></div>
           <div className="module-grid">
-            {stages.map((stage) => (
-              <article className="module-card demo-stage-card" key={stage.number}>
-                <div className="module-card-top"><span className="module-number">{stage.number}</span><span className="module-status">{stage.status}</span></div>
-                <h3>{stage.title}</h3>
-                <p>{stage.detail}</p>
-                <Link className="text-link demo-stage-link" href={stage.href}>{stage.action} <span aria-hidden="true">→</span></Link>
-              </article>
-            ))}
+            {stages.map((stage) => {
+              const isComplete = completed.includes(stage.number);
+              return (
+                <article className={isComplete ? 'module-card demo-stage-card is-explored' : 'module-card demo-stage-card'} key={stage.number}>
+                  <div className="module-card-top"><span className="module-number">{stage.number}</span><span className="module-status">{isComplete ? 'Explored' : stage.status}</span></div>
+                  <h3>{stage.title}</h3>
+                  <p>{stage.detail}</p>
+                  <div className="demo-stage-actions">
+                    <Link className="text-link demo-stage-link" href={stage.href}>{stage.action} <span aria-hidden="true">→</span></Link>
+                    <label className="demo-stage-check"><input type="checkbox" checked={isComplete} onChange={() => toggleStage(stage.number)} /> Explored</label>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </section>
 
@@ -63,6 +95,7 @@ export default function DemoPage() {
             <Link className="text-link" href="/feed">View opportunities <span aria-hidden="true">→</span></Link>
           </div>
         </section>
+        <footer className="site-footer"><Link className="footer-brand" href="/">onlyducks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
       </main>
     </>
   );
