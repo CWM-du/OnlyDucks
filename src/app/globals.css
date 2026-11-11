@@ -562,3 +562,4 @@ a:focus-visible,
 }
 
 .agent-demo-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+\n\n/* DEV03 guided demo stage actions */\n.demo-stage-card { display: flex; flex-direction: column; align-items: flex-start; }\n.demo-stage-link { margin-top: auto; padding-top: 18px; }\n
