@@ -16,5 +16,23 @@ services:
       timeout: 5s
       retries: 10
 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - APP_BASE_URL=${APP_BASE_URL:-http://localhost:3000}
+      - DATABASE_URL=postgresql://onlyducks:onlyducks_local@db:5432/onlyducks?schema=public
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+      - GROQ_MODEL=${GROQ_MODEL:-llama-3.3-70b-versatile}
+      - AI_MODEL_NAME=${AI_MODEL_NAME:-llama-3.3-70b-versatile}
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   onlyducks_pgdata:
