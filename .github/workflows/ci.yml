@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-    branches: [develop, main, feat/dev03-responsive-experience]
+    branches: [develop, main, feat/dev03-responsive-experience, fix/recover-p0-foundations]
   push:
     branches: [develop, main]
 
