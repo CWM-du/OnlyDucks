@@ -3,7 +3,7 @@ import { MentorSessionStatus } from '@prisma/client';
 import { prisma } from '@/lib/db/prisma';
 import { SessionRepository } from './session-repository';
 import { SessionService } from './session-service';
-import { SessionNotFoundError } from './errors';
+import { InvalidSessionStateError, SessionNotFoundError } from './errors';
 
 const enabled = Boolean(process.env.TEST_DATABASE_URL);
 const suffix = `integration-${process.pid}-${Date.now()}`;
@@ -50,5 +50,21 @@ describe.skipIf(!enabled)('PostgreSQL backend integration', () => {
     await expect(
       service.transitionSessionStatus(userA.externalUserId, session.id, MentorSessionStatus.COMPLETED),
     ).resolves.toMatchObject({ id: session.id, userId: userA.id, status: MentorSessionStatus.COMPLETED });
+  });
+
+  it('allows only one concurrent terminal transition and records no duplicate winner', async () => {
+    const session = await repository.createSessionWithConflictCheck(userB.id, mentor.id);
+    const attempts = await Promise.allSettled([
+      service.transitionSessionStatus(userB.externalUserId, session.id, MentorSessionStatus.COMPLETED),
+      service.transitionSessionStatus(userB.externalUserId, session.id, MentorSessionStatus.COMPLETED),
+    ]);
+
+    expect(attempts.filter((result) => result.status === 'fulfilled')).toHaveLength(1);
+    expect(attempts.filter((result) => result.status === 'rejected')).toHaveLength(1);
+    const rejected = attempts.find((result) => result.status === 'rejected');
+    expect(rejected).toMatchObject({ reason: expect.any(InvalidSessionStateError) });
+    expect(await prisma.mentorSession.count({
+      where: { id: session.id, status: MentorSessionStatus.COMPLETED },
+    })).toBe(1);
   });
 });
