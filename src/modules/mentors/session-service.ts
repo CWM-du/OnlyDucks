@@ -45,7 +45,20 @@ export class SessionService {
       throw new InvalidSessionStateError(session.status);
     }
 
-    const updated = await this.repo.updateSessionStatus(sessionId, targetStatus, new Date());
+    const updated = await this.repo.transitionActiveSession(
+      sessionId,
+      user.id,
+      targetStatus,
+      new Date(),
+    );
+
+    if (!updated) {
+      const latest = await this.repo.getSessionById(sessionId);
+      if (!latest || latest.userId !== user.id) {
+        throw new SessionNotFoundError(sessionId);
+      }
+      throw new InvalidSessionStateError(latest.status);
+    }
 
     if (targetStatus === MentorSessionStatus.COMPLETED) {
       await this.analytics.trackSessionCompleted(user.id, sessionId, session.turnCount);
