@@ -2,28 +2,51 @@ name: CI
 
 on:
   pull_request:
-    branches: [develop, main]
+    branches: [develop, main, feat/dev03-responsive-experience, integration/backend-recovery-from-develop]
   push:
     branches: [develop, main]
 
 jobs:
   validate:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: onlyducks
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ci -d onlyducks"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/onlyducks
+      TEST_DATABASE_URL: postgresql://ci:ci@localhost:5432/onlyducks
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Validate Prisma schema
+        run: npx prisma validate
 
       - name: Generate Prisma client
         run: npm run db:generate
+
+      - name: Apply migrations to clean PostgreSQL
+        run: npm run db:deploy
 
       - name: Lint
         run: npm run lint
@@ -36,6 +59,3 @@ jobs:
 
       - name: Production build
         run: npm run build
-        env:
-          # Build-time placeholder only. Never use production credentials in CI.
-          DATABASE_URL: postgresql://ci:ci@localhost:5432/onlyducks

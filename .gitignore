@@ -33,7 +33,5 @@ pnpm-debug.log*
 # generated Prisma client is generated during install/build
 # keep migrations and schema tracked
 
-.next/
-node_modules/
+# TypeScript build cache
 *.tsbuildinfo
-next-env.d.ts

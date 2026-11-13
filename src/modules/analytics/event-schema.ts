@@ -25,3 +25,15 @@ export const analyticsEventSchema = z.object({
 });
 
 export type AnalyticsEventInput = z.infer<typeof analyticsEventSchema>;
+
+
+// Browser-submitted analytics are deliberately limited to user-observable actions.
+// Mentor lifecycle events are emitted only by trusted server-side service methods.
+export const publicAnalyticsEventSchema = z.object({
+  eventType: z.enum(['recommendation_displayed', 'outbound_click']),
+  sessionId: z.string().optional(),
+  contentId: z.string().optional(),
+  source: z.string().max(100).optional(),
+  destination: z.string().url().optional(),
+  properties: analyticsPropertiesSchema.optional(),
+}).strict();
