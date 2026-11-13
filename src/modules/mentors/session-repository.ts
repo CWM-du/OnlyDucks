@@ -126,17 +126,28 @@ export class SessionRepository {
     });
   }
 
-  async updateSessionStatus(
+  async transitionActiveSession(
     sessionId: string,
+    userId: string,
     status: MentorSessionStatus,
     endedAt: Date = new Date(),
   ) {
-    return prisma.mentorSession.update({
-      where: { id: sessionId },
+    const result = await prisma.mentorSession.updateMany({
+      where: {
+        id: sessionId,
+        userId,
+        status: MentorSessionStatus.ACTIVE,
+      },
       data: {
         status,
         endedAt,
       },
+    });
+
+    if (result.count !== 1) return null;
+
+    return prisma.mentorSession.findUniqueOrThrow({
+      where: { id: sessionId },
       include: {
         mentor: {
           select: {
@@ -178,4 +189,3 @@ export class SessionRepository {
 }
 
 export const sessionRepository = new SessionRepository();
-
