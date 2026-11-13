@@ -592,3 +592,182 @@ a:focus-visible,
 @media (prefers-reduced-motion: reduce) {
   .demo-progress-track span { transition: none; }
 }
+
+
+/* OnlyDucks visual refresh — metallic blue / precision interface */
+:root {
+  color-scheme: dark;
+  --canvas: #07111f;
+  --ink: #e8f1fb;
+  --muted: #9aacc2;
+  --line: rgba(130, 169, 207, .2);
+  --paper: #0d1b2c;
+  --green: #72b9ef;
+  --green-dark: #b4dfff;
+  --green-soft: rgba(67, 137, 194, .16);
+  --lime: #d9edff;
+  --metal-hi: #dcecff;
+  --metal-mid: #7e9bb8;
+  --metal-low: #38516b;
+  --cyan: #55d6f5;
+  --panel-shadow: 0 18px 55px rgba(0, 0, 0, .28);
+}
+html { background: #07111f; }
+body {
+  background:
+    radial-gradient(ellipse at 76% -12%, rgba(48, 119, 177, .24), transparent 38rem),
+    radial-gradient(ellipse at 8% 42%, rgba(30, 77, 121, .16), transparent 34rem),
+    linear-gradient(145deg, #07111f 0%, #0a1728 48%, #081321 100%);
+  color: var(--ink);
+}
+::selection { background: rgba(85, 214, 245, .28); color: #fff; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+  outline-color: var(--cyan) !important;
+}
+.app-shell { position: relative; }
+.topbar {
+  border-bottom-color: rgba(143, 182, 220, .2);
+  background: linear-gradient(180deg, rgba(17, 37, 58, .62), rgba(9, 23, 39, .28));
+  backdrop-filter: blur(16px);
+}
+.brand { color: #f0f7ff; letter-spacing: -.045em; }
+.brand-mark {
+  border: 1px solid rgba(210, 232, 255, .5);
+  background: linear-gradient(145deg, #dceeff 0%, #6e9fc8 28%, #24496d 66%, #122b45 100%);
+  box-shadow: inset 0 1px 1px rgba(255,255,255,.65), 0 7px 22px rgba(55, 139, 205, .25);
+  color: #071321;
+}
+.nav-link { color: #9eb2c9; }
+.nav-link:hover, .nav-link-active {
+  background: linear-gradient(135deg, rgba(94, 157, 207, .2), rgba(30, 78, 119, .22));
+  color: #e8f5ff;
+  box-shadow: inset 0 0 0 1px rgba(137, 190, 231, .16);
+}
+.environment-pill, .availability-pill {
+  border-color: rgba(139, 181, 219, .26);
+  background: linear-gradient(135deg, rgba(35, 64, 91, .78), rgba(12, 30, 49, .88));
+  color: #b7cce1;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+}
+.status-dot { background: #62d5b1; box-shadow: 0 0 10px rgba(98,213,177,.6); }
+.status-dot-muted { background: #f0c477; box-shadow: 0 0 10px rgba(240,196,119,.4); }
+.eyebrow, .heading-accent, .text-link, .card-link, .mentor-focus,
+.welcome-step-label, .onboarding-index { color: #83c9f6; }
+.eyebrow-line { background: linear-gradient(90deg, #55d6f5, #779ec2); }
+.home-hero h1, .page-intro h1, .welcome-hero h1, .sandbox-page > h1 {
+  color: #edf6ff;
+  text-shadow: 0 5px 35px rgba(70, 149, 209, .13);
+}
+.hero-copy { color: #a7bad0; }
+.button-primary {
+  border: 1px solid rgba(220, 241, 255, .45);
+  background: linear-gradient(135deg, #d9edff 0%, #8dbbe0 24%, #3d78a8 62%, #1e4568 100%);
+  color: #071523;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.75), 0 9px 26px rgba(38, 112, 166, .28);
+}
+.button-primary:hover {
+  background: linear-gradient(135deg, #eff8ff 0%, #a7d1f1 25%, #548dbb 65%, #285779 100%);
+}
+.button-secondary {
+  border-color: rgba(137, 178, 216, .28);
+  background: linear-gradient(145deg, rgba(33, 58, 82, .88), rgba(12, 28, 46, .92));
+  color: #d7e8f8;
+}
+.text-link { color: #9ed8ff; }
+.hero-aside { filter: drop-shadow(0 18px 42px rgba(30, 101, 157, .12)); }
+.orbit { border-color: rgba(112, 166, 209, .28); }
+.orbit-inner { border-color: rgba(107, 188, 229, .42); }
+.orbit-core {
+  border: 1px solid rgba(220, 240, 255, .52);
+  background: linear-gradient(145deg, #e4f2ff 0%, #8eb7d8 18%, #477ba5 45%, #1c4264 72%, #10283f 100%);
+  box-shadow: inset 0 2px 2px rgba(255,255,255,.62), inset 0 -8px 18px rgba(3,15,29,.42), 0 20px 65px rgba(40, 127, 184, .34);
+  color: #071523;
+}
+.orbit-label {
+  border-color: rgba(132, 183, 224, .28);
+  background: linear-gradient(135deg, rgba(25, 51, 76, .94), rgba(10, 25, 42, .94));
+  color: #b9def7;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 24px rgba(0,0,0,.2);
+}
+.orbit-caption, .section-note { color: #8da4bd; }
+.module-card, .mentor-card, .welcome-step-card, .sandbox-card,
+.profile-form, .profile-preview, .profile-layout > *, .demo-progress-panel,
+.onboarding-item, .local-data-note, .welcome-boundary {
+  border-color: rgba(132, 174, 213, .2);
+  background: linear-gradient(145deg, rgba(20, 42, 65, .94), rgba(10, 25, 42, .96));
+  color: var(--ink);
+  box-shadow: var(--panel-shadow), inset 0 1px 0 rgba(255,255,255,.045);
+}
+.module-card, .mentor-card, .welcome-step-card, .sandbox-card { transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease; }
+.module-card:hover, .mentor-card:hover, .welcome-step-card:hover, .sandbox-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(108, 193, 240, .45);
+  box-shadow: 0 22px 58px rgba(0,0,0,.34), 0 0 24px rgba(58, 145, 201, .08), inset 0 1px 0 rgba(255,255,255,.07);
+}
+.module-number, .welcome-step-number { color: #7894b0; }
+.module-status, .sandbox-status {
+  border: 1px solid rgba(126, 168, 205, .18);
+  background: rgba(77, 113, 146, .17);
+  color: #a9c4dc;
+}
+.module-card h3, .mentor-card h3, .welcome-step-card h3,
+.sandbox-card h2, .section-heading h2 { color: #e3f0fc; }
+.module-card > p, .mentor-description, .welcome-step-card > p,
+.sandbox-card > p, .feed-status-copy p { color: #9db1c7; }
+.notice-panel, .mentor-notice, .welcome-hero-note {
+  border-color: rgba(93, 170, 218, .25);
+  background: linear-gradient(135deg, rgba(30, 74, 106, .48), rgba(13, 34, 54, .84));
+}
+.notice-panel p, .mentor-notice p, .welcome-hero-note p { color: #a7bfd5; }
+.notice-icon, .welcome-note-mark {
+  border-color: rgba(119, 190, 232, .55);
+  color: #83d6fa;
+}
+.notice-panel strong, .mentor-notice strong, .welcome-hero-note strong { color: #e4f2ff; }
+.site-footer { border-top-color: rgba(132, 174, 213, .2); color: #8097af; }
+.footer-brand { color: #dcecff; }
+.feed-status-panel, .sandbox-notice, .agent-demo-notice {
+  border-color: rgba(221, 184, 111, .25);
+  background: linear-gradient(135deg, rgba(79, 66, 43, .28), rgba(28, 34, 42, .8));
+  color: #c7b99d;
+}
+.status-symbol { background: rgba(179, 144, 81, .18); color: #e2c58f; }
+.feed-status-copy p, .agent-demo-notice { color: #c0b69f; }
+.status-tag { border-color: rgba(221, 184, 111, .3); color: #e1c58f; }
+.category-icon {
+  border: 1px solid rgba(109, 182, 227, .2);
+  background: linear-gradient(145deg, rgba(78, 141, 188, .28), rgba(22, 54, 81, .7));
+  color: #a8dcfa;
+}
+.mentor-avatar-mint, .mentor-avatar-lavender, .mentor-avatar-peach {
+  border: 1px solid rgba(180, 211, 237, .25);
+  background: linear-gradient(145deg, #b8d9ef, #426d91);
+  color: #10263c;
+}
+.mentor-card-footer, .welcome-step-bottom { border-top-color: rgba(132, 174, 213, .18); }
+.disabled-action, .unavailable-label, .welcome-availability { color: #8a9db1; }
+.progress-meter, .demo-progress-track { background: rgba(119, 157, 190, .18); }
+.progress-meter span, .demo-progress-track span { background: linear-gradient(90deg, #3d83b5, #76d5f0, #d4edff); box-shadow: 0 0 16px rgba(91, 197, 236, .32); }
+.onboarding-check input, .roadmap-task input, .demo-stage-check input { accent-color: #65bde9; }
+.onboarding-item-done, .demo-stage-card.is-explored {
+  border-color: rgba(91, 194, 160, .38);
+  background: linear-gradient(145deg, rgba(25, 67, 66, .6), rgba(11, 37, 45, .94));
+}
+.onboarding-item-done .onboarding-item-copy strong { color: #a8c8c4; }
+.form-control {
+  border-color: rgba(133, 174, 211, .28);
+  background: rgba(5, 17, 30, .72);
+  color: #e4f1fd;
+}
+.form-control::placeholder { color: #7188a0; }
+.form-control:focus-visible { border-color: #64c8ef; }
+.profile-preview { color: var(--ink); }
+.agent-page button:focus-visible, .agent-page input:focus-visible, .agent-page textarea:focus-visible { outline-color: var(--cyan); }
+.agent-page button { color: inherit; }
+@media (max-width: 620px) {
+  .topbar { background: linear-gradient(180deg, rgba(17,37,58,.7), rgba(9,23,39,.35)); }
+  .module-card:hover, .mentor-card:hover, .welcome-step-card:hover, .sandbox-card:hover { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .module-card, .mentor-card, .welcome-step-card, .sandbox-card { transition: none; }
+}
