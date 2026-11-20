@@ -1,3 +1,6 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const navigation = [
@@ -22,8 +25,21 @@ const jobs = [
 ];
 
 export default function HomePage() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const savedTheme = window.localStorage.getItem('onlyducks-theme');
+    if (savedTheme === 'dark' || savedTheme === 'light') setTheme(savedTheme);
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem('onlyducks-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme((current) => current === 'light' ? 'dark' : 'light');
+
   return (
-    <main className="od-social">
+    <main className={`od-social ${theme === 'dark' ? 'od-theme-dark' : 'od-theme-light'}`}>
       <header className="od-topbar">
         <Link className="od-brand" href="/" aria-label="OnlyDucks inicio">
           <span className="od-brand-mark">o</span><span>Only<em>Ducky</em></span>
@@ -34,6 +50,10 @@ export default function HomePage() {
           <Link href="/roadmap">Aprender</Link>
         </nav>
         <div className="od-top-actions">
+          <button className="od-theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === 'light' ? 'Cambiar al tema oscuro' : 'Cambiar al tema claro'}>
+            <span aria-hidden="true">{theme === 'light' ? '☾' : '☀'}</span>
+            {theme === 'light' ? 'Modo oscuro' : 'Modo claro'}
+          </button>
           <Link className="od-login" href="/profile">Entrar</Link>
           <Link className="od-join" href="/welcome">Crear cuenta</Link>
         </div>
@@ -70,33 +90,19 @@ export default function HomePage() {
             <div><h1 id="feed-title">Tu feed profesional</h1><p>Ideas, conocimiento y oportunidades seleccionadas para ti.</p></div>
             <span className="od-filter">Para ti⌄</span>
           </div>
-
           <section className="od-composer" aria-label="Crear publicación">
-            <div className="od-composer-top">
-              <span className="od-avatar">TU</span>
-              <div className="od-composer-prompt">Comparte una idea o pregunta a la comunidad…</div>
-            </div>
+            <div className="od-composer-top"><span className="od-avatar">TU</span><div className="od-composer-prompt">Comparte una idea o pregunta a la comunidad…</div></div>
             <div className="od-composer-actions"><span>▧ Publicación</span><span>▶ Recurso</span><span>✦ Preguntar a la IA</span></div>
           </section>
-
           <article className="od-post">
-            <header className="od-post-head">
-              <span className="od-avatar">DD</span>
-              <div className="od-post-author"><strong>DuckDev · Equipo editorial</strong><span>Contenido destacado · Ejemplo de preview</span></div>
-              <span className="od-post-more" aria-hidden="true">•••</span>
-            </header>
+            <header className="od-post-head"><span className="od-avatar">DD</span><div className="od-post-author"><strong>DuckDev · Equipo editorial</strong><span>Contenido destacado · Ejemplo de preview</span></div><span className="od-post-more" aria-hidden="true">•••</span></header>
             <p className="od-post-copy">Aprender una tecnología nueva funciona mejor cuando conectas teoría, práctica y feedback. Explora una ruta, plantea tus dudas y convierte cada avance en un proyecto real.</p>
             <div className="od-post-visual" role="img" aria-label="Gráfico abstracto de aprendizaje y tecnología"><div className="od-visual-orbit">LEARN<br/>BUILD<br/>GROW</div></div>
             <div className="od-post-stats"><span>Contenido de muestra para la preview</span><span>Lectura · 3 min</span></div>
             <div className="od-post-actions"><span>♡ Me interesa</span><span>◯ Comentar</span><span>↗ Compartir</span></div>
           </article>
-
           <article className="od-post">
-            <header className="od-post-head">
-              <span className="od-avatar">AI</span>
-              <div className="od-post-author"><strong>Aprendizaje práctico</strong><span>Ruta recomendada · Ejemplo de preview</span></div>
-              <span className="od-post-more" aria-hidden="true">•••</span>
-            </header>
+            <header className="od-post-head"><span className="od-avatar">AI</span><div className="od-post-author"><strong>Aprendizaje práctico</strong><span>Ruta recomendada · Ejemplo de preview</span></div><span className="od-post-more" aria-hidden="true">•••</span></header>
             <p className="od-post-copy">¿Trabajas con Python? Una buena siguiente etapa puede ser construir una API pequeña, añadir tests y documentar el despliegue. Puedes organizar los pasos en tu roadmap.</p>
             <div className="od-post-actions"><span>♡ Me interesa</span><span>◯ Comentar</span><Link href="/roadmap">Ver ruta →</Link></div>
           </article>
@@ -104,30 +110,14 @@ export default function HomePage() {
 
         <aside className="od-right" aria-label="Información complementaria">
           <input className="od-search" type="search" placeholder="⌕ Buscar expertos o temas" aria-label="Buscar expertos o temas" />
-          <section className="od-panel">
-            <h2>♨ Trending ahora</h2>
-            {trends.map((trend) => <div className="od-trend" key={trend.tag}><small>{trend.category}</small><strong>{trend.tag}</strong><span>{trend.count}</span></div>)}
-            <Link className="od-panel-link" href="/feed">Explorar tendencias →</Link>
-          </section>
-          <section className="od-panel">
-            <h2>▣ Radar de empleo</h2>
-            {jobs.map((job) => <div className="od-job" key={job.title}><strong>{job.title}</strong><span>{job.detail}</span></div>)}
-            <Link className="od-panel-link" href="/feed">Ver radar completo →</Link>
-          </section>
-          <section className="od-panel">
-            <h2>✦ Sigue aprendiendo</h2>
-            <div className="od-trend"><strong>Tu próxima ruta</strong><span>Organiza objetivos y progreso en tu espacio de aprendizaje.</span></div>
-            <Link className="od-panel-link" href="/roadmap">Abrir mi roadmap →</Link>
-          </section>
+          <section className="od-panel"><h2>♨ Trending ahora</h2>{trends.map((trend) => <div className="od-trend" key={trend.tag}><small>{trend.category}</small><strong>{trend.tag}</strong><span>{trend.count}</span></div>)}<Link className="od-panel-link" href="/feed">Explorar tendencias →</Link></section>
+          <section className="od-panel"><h2>▣ Radar de empleo</h2>{jobs.map((job) => <div className="od-job" key={job.title}><strong>{job.title}</strong><span>{job.detail}</span></div>)}<Link className="od-panel-link" href="/feed">Ver radar completo →</Link></section>
+          <section className="od-panel"><h2>✦ Sigue aprendiendo</h2><div className="od-trend"><strong>Tu próxima ruta</strong><span>Organiza objetivos y progreso en tu espacio de aprendizaje.</span></div><Link className="od-panel-link" href="/roadmap">Abrir mi roadmap →</Link></section>
         </aside>
       </div>
 
       <nav className="od-bottom-nav" aria-label="Navegación móvil">
-        <Link href="/"><span>⌂</span>Inicio</Link>
-        <Link href="/feed"><span>⌕</span>Explorar</Link>
-        <Link href="/agent"><span>✦</span>Agente</Link>
-        <Link href="/roadmap"><span>▤</span>Aprender</Link>
-        <Link href="/profile"><span>◉</span>Perfil</Link>
+        <Link href="/"><span>⌂</span>Inicio</Link><Link href="/feed"><span>⌕</span>Explorar</Link><Link href="/agent"><span>✦</span>Agente</Link><Link href="/roadmap"><span>▤</span>Aprender</Link><Link href="/profile"><span>◉</span>Perfil</Link>
       </nav>
     </main>
   );
