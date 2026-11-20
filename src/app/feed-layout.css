@@ -89,3 +89,52 @@
  .od-social .od-bottom-nav span { color:#77d4f3; font-size:1rem; }
 }
 @media(prefers-reduced-motion:reduce) { .od-social * { scroll-behavior:auto!important; transition:none!important; } }
+
+/* Light editorial palette */
+.od-social { color:#24384b; }
+.od-social .od-topbar { background:rgba(250,253,255,.94); border-bottom-color:#e4edf3; }
+.od-social .od-brand span:last-child { color:#152b3e; }
+.od-social .od-topnav a,.od-social .od-top-actions a { color:#5c7184; }
+.od-social .od-topnav a:hover,.od-social .od-topnav a.active { color:#087eae; background:#e8f6fc; }
+.od-social .od-top-actions .od-login { border-color:#dce7ee; color:#395267; }
+.od-social .od-layout { color:#24384b; }
+.od-social .od-sidebar-card,.od-social .od-panel,.od-social .od-post,.od-social .od-composer { border-color:#e2ebf1; background:#fff; box-shadow:0 8px 24px rgba(29,65,91,.055); }
+.od-social .od-intro-card { background:linear-gradient(145deg,#eaf8fc,#f7fcfe); }
+.od-social .od-intro-card h2 { color:#1c3448; }
+.od-social .od-intro-card p:last-child { color:#71869a; }
+.od-social .od-menu a { color:#52697d; }
+.od-social .od-menu a:hover,.od-social .od-menu a.active { color:#087eae; background:#eaf7fc; }
+.od-social .od-menu .od-menu-icon { color:#159acb; }
+.od-social .od-pro-card { border-color:#d8edf7; background:linear-gradient(145deg,#edf9fd,#f7fcff); }
+.od-social .od-pro-card strong { color:#1c3448; }
+.od-social .od-pro-card p { color:#6c8397; }
+.od-social .od-pro-card a,.od-social .od-panel-link { color:#0788b9; }
+.od-social .od-feed-heading h1 { color:#1c3042; }
+.od-social .od-feed-heading p { color:#75899b; }
+.od-social .od-filter { border-color:#e0eaf0; color:#587084; background:#fff; }
+.od-social .od-avatar { color:#075577; background:linear-gradient(145deg,#d9f3fc,#9edcf0); }
+.od-social .od-composer-prompt { border-color:#e3edf2; color:#8497a7; background:#f7fafc; }
+.od-social .od-composer-actions span { color:#577287; background:#eef7fa; }
+.od-social .od-post-author strong { color:#253c50; }
+.od-social .od-post-author span,.od-social .od-post-stats { color:#8395a5; }
+.od-social .od-post-copy { color:#50677b; }
+.od-social .od-post-visual { border-color:#dcecf3; background:radial-gradient(circle at 50% 35%,rgba(81,167,211,.16),transparent 48%),linear-gradient(135deg,#e9f7fc,#f4f9fc); }
+.od-social .od-visual-orbit { border-color:#8ccfe6; box-shadow:0 0 0 18px rgba(94,178,219,.07),0 0 55px rgba(65,176,225,.12); color:#2489ad; }
+.od-social .od-post-actions span { color:#567187; background:#f0f6f9; }
+.od-social .od-search { border-color:#e1eaf0; color:#30495e; background:#fff; }
+.od-social .od-search::placeholder { color:#8a9baa; }
+.od-social .od-panel h2 { color:#243a4e; }
+.od-social .od-trend,.od-social .od-job { border-top-color:#edf1f4; }
+.od-social .od-trend small { color:#8295a5; }
+.od-social .od-trend strong,.od-social .od-job strong { color:#30495e; }
+.od-social .od-trend span,.od-social .od-job span { color:#8193a2; }
+.od-social .od-bottom-nav { border-top-color:#e1eaf0; background:rgba(250,253,255,.97); }
+.od-social .od-bottom-nav a { color:#637b8e; }
+.od-social .od-bottom-nav span { color:#159acb; }
+.od-social .od-profile-card { display:flex; align-items:center; gap:11px; padding:13px; }
+.od-social .od-profile-avatar { display:grid; flex:none; place-items:center; width:42px; height:42px; border:2px solid #fff; border-radius:50%; color:#075577; background:linear-gradient(145deg,#d8f2fb,#8ed2e9); box-shadow:0 0 0 1px #cce7f1; font:800 .78rem Manrope,sans-serif; }
+.od-social .od-profile-meta { flex:1; min-width:0; }
+.od-social .od-profile-meta strong { display:block; overflow:hidden; color:#294258; font-size:.76rem; text-overflow:ellipsis; white-space:nowrap; }
+.od-social .od-profile-meta span { display:block; margin-top:3px; color:#8194a4; font-size:.65rem; }
+.od-social .od-profile-link { color:#168db8; font-size:.68rem; font-weight:750; }
+@media(max-width:720px) { .od-social .od-bottom-nav { background:rgba(250,253,255,.97); } }
