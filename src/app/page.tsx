@@ -53,6 +53,11 @@ export default function HomePage() {
               </Link>
             ))}
           </nav>
+          <section className="od-sidebar-card od-profile-card" aria-label="Mi perfil">
+            <span className="od-profile-avatar" aria-label="Avatar de usuario">TU</span>
+            <div className="od-profile-meta"><strong>Tu perfil</strong><span>Personaliza tu espacio</span></div>
+            <Link className="od-profile-link" href="/profile" aria-label="Abrir mi perfil">Ver →</Link>
+          </section>
           <section className="od-sidebar-card od-pro-card">
             <strong>OnlyDucky Pro</strong>
             <p>Más consultas IA, rutas avanzadas y herramientas para impulsar tu carrera.</p>
@@ -68,7 +73,7 @@ export default function HomePage() {
 
           <section className="od-composer" aria-label="Crear publicación">
             <div className="od-composer-top">
-              <span className="od-avatar">OD</span>
+              <span className="od-avatar">TU</span>
               <div className="od-composer-prompt">Comparte una idea o pregunta a la comunidad…</div>
             </div>
             <div className="od-composer-actions"><span>▧ Publicación</span><span>▶ Recurso</span><span>✦ Preguntar a la IA</span></div>
