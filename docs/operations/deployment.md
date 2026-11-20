@@ -1,18 +1,9 @@
 # Deployment
 
-## Pre-deployment checklist
-- Confirm hosting provider and Node.js compatibility.
-- Configure environment variables and secrets in the hosting platform.
-- Provision PostgreSQL and verify network access.
-- Confirm identity provider callback URLs.
-- Confirm Oscar API access and limits.
-- Confirm content source access.
-- Run lint, typecheck, tests, and production build.
-- Apply reviewed database migrations.
-- Run smoke tests against the deployed environment.
+OnlyDucks is prepared as a separately runnable Next.js service for handover to Oscar. Oscar will deploy it within the existing notodoescodigo.com infrastructure and complete the server-side connection.
 
-## Security
-Never commit production secrets or `.env` files. Use platform-managed secrets or an approved secret manager. Restrict access to production resources.
+See [OnlyDucks handover for notodoescodigo.com](./notodoescodigo-handover.md) for the runtime contract, environment variables, host integration options, migration sequence, validation and known integration boundaries.
 
-## Rollback
-Document the selected platform's rollback procedure and database recovery approach before pilot launch.
+The repository's Docker Compose file is for local PostgreSQL development only. It must not be treated as the production topology.
+
+No production server, DNS, reverse proxy, database, secret store or external integration is modified by this repository preparation.
