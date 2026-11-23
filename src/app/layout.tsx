@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" data-theme="light" suppressHydrationWarning>
+    <html lang="es" data-theme="light" data-build-commit={process.env.VERCEL_GIT_COMMIT_SHA ?? "local"} suppressHydrationWarning>
       <body><ThemeProvider>{children}</ThemeProvider></body>
     </html>
   );
