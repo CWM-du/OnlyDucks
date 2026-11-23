@@ -907,3 +907,15 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .od-global-theme-toggle:focus-visible { outline:3px solid #48b9e2; outline-offset:3px; }
 @media(max-width:720px) { .od-global-theme-toggle { right:12px; bottom:calc(78px + env(safe-area-inset-bottom)); } }
 body:has(.od-social) .od-global-theme-toggle { display:none; }
+
+.profile-avatar-editor { display:flex; align-items:center; gap:14px; margin:0 0 18px; }
+.profile-avatar-editor > div { min-width:0; flex:1; }
+.profile-avatar-editor small { display:block; margin-top:6px; color:var(--muted); font-size:.72rem; line-height:1.5; }
+.profile-avatar img { display:block; width:100%; height:100%; border-radius:inherit; object-fit:cover; }
+:root[data-theme="light"] .profile-avatar { border:1px solid #cfe3ed; background:linear-gradient(145deg,#d9f2fc,#8bc9e3); color:#155b7d; }
+:root[data-theme="light"] .profile-level { background:#e8f5fb; color:#176b91; }
+:root[data-theme="light"] .profile-role { color:#6a8295; }
+:root[data-theme="light"] .profile-preview h2,:root[data-theme="light"] .profile-preview h3 { color:#20384d; }
+:root[data-theme="light"] .profile-preview p { color:#687f93; }
+:root[data-theme="light"] .preview-divider { border-color:#e0eaf0; }
+:root[data-theme="light"] .preview-footnote { color:#8194a3; }
