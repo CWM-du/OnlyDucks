@@ -29,6 +29,10 @@ export default function HomePage() {
   const { theme, toggleTheme } = useOnlyDucksTheme();
   const [profileName, setProfileName] = useState('Tu perfil');
   const [profileAvatar, setProfileAvatar] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const normalizedQuery = searchQuery.trim().toLocaleLowerCase('es');
+  const visibleTrends = trends.filter((item) => `${item.category} ${item.tag} ${item.count}`.toLocaleLowerCase('es').includes(normalizedQuery));
+  const visibleJobs = jobs.filter((item) => `${item.title} ${item.detail}`.toLocaleLowerCase('es').includes(normalizedQuery));
 
   useEffect(() => {
     try {
@@ -94,9 +98,9 @@ export default function HomePage() {
             <div><h1 id="feed-title">Tu feed profesional</h1><p>Ideas, conocimiento y oportunidades seleccionadas para ti.</p></div>
             <span className="od-filter">Para ti⌄</span>
           </div>
-          <section className="od-composer" aria-label="Crear publicación">
+          <section className="od-composer" aria-label="Crear publicación — vista previa">
             <div className="od-composer-top"><span className="od-avatar">TU</span><div className="od-composer-prompt">Comparte una idea o pregunta a la comunidad…</div></div>
-            <div className="od-composer-actions"><span>▧ Publicación</span><span>▶ Recurso</span><span>✦ Preguntar a la IA</span></div>
+            <div className="od-composer-actions"><span>▧ Publicación</span><span>▶ Recurso</span><span>✦ Preguntar a la IA</span></div><p className="od-demo-note">Compositor de vista previa · La publicación aún no está conectada</p>
           </section>
           <article className="od-post">
             <header className="od-post-head"><span className="od-avatar">DD</span><div className="od-post-author"><strong>DuckDev · Equipo editorial</strong><span>Contenido destacado · Ejemplo de preview</span></div><span className="od-post-more" aria-hidden="true">•••</span></header>
@@ -113,9 +117,9 @@ export default function HomePage() {
         </section>
 
         <aside className="od-right" aria-label="Información complementaria">
-          <input className="od-search" type="search" placeholder="⌕ Buscar expertos o temas" aria-label="Buscar expertos o temas" />
-          <section className="od-panel"><h2>♨ Trending ahora</h2>{trends.map((trend) => <div className="od-trend" key={trend.tag}><small>{trend.category}</small><strong>{trend.tag}</strong><span>{trend.count}</span></div>)}<Link className="od-panel-link" href="/feed">Explorar tendencias →</Link></section>
-          <section className="od-panel"><h2>▣ Radar de empleo</h2>{jobs.map((job) => <div className="od-job" key={job.title}><strong>{job.title}</strong><span>{job.detail}</span></div>)}<Link className="od-panel-link" href="/feed">Ver radar completo →</Link></section>
+          <input className="od-search" type="search" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="⌕ Buscar temas u oportunidades" aria-label="Buscar temas u oportunidades" />
+          <section className="od-panel"><h2>♨ Trending ahora</h2>{visibleTrends.length ? visibleTrends.map((trend) => <div className="od-trend" key={trend.tag}><small>{trend.category}</small><strong>{trend.tag}</strong><span>{trend.count}</span></div>) : <p className="od-empty-result">No hay temas que coincidan.</p>}<Link className="od-panel-link" href="/feed">Explorar tendencias →</Link></section>
+          <section className="od-panel"><h2>▣ Radar de empleo</h2>{visibleJobs.length ? visibleJobs.map((job) => <div className="od-job" key={job.title}><strong>{job.title}</strong><span>{job.detail}</span></div>) : <p className="od-empty-result">No hay oportunidades que coincidan.</p>}<Link className="od-panel-link" href="/feed">Ver radar completo →</Link></section>
           <section className="od-panel"><h2>✦ Sigue aprendiendo</h2><div className="od-trend"><strong>Tu próxima ruta</strong><span>Organiza objetivos y progreso en tu espacio de aprendizaje.</span></div><Link className="od-panel-link" href="/roadmap">Abrir mi roadmap →</Link></section>
         </aside>
       </div>
