@@ -27,6 +27,20 @@ const jobs = [
 
 export default function HomePage() {
   const { theme, toggleTheme } = useOnlyDucksTheme();
+  const [profileName, setProfileName] = useState('Tu perfil');
+  const [profileAvatar, setProfileAvatar] = useState('');
+
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem('onlyducks:developer-profile:v1');
+      if (!saved) return;
+      const profile = JSON.parse(saved) as { displayName?: unknown; avatarDataUrl?: unknown };
+      if (typeof profile.displayName === 'string' && profile.displayName.trim()) setProfileName(profile.displayName.trim());
+      if (typeof profile.avatarDataUrl === 'string' && profile.avatarDataUrl.startsWith('data:image/')) setProfileAvatar(profile.avatarDataUrl);
+    } catch {
+      // Keep the default profile placeholder when local data is unavailable.
+    }
+  }, []);
 
   return (
     <main className={`od-social ${theme === 'dark' ? 'od-theme-dark' : 'od-theme-light'}`}>
@@ -64,8 +78,8 @@ export default function HomePage() {
             ))}
           </nav>
           <section className="od-sidebar-card od-profile-card" aria-label="Mi perfil">
-            <span className="od-profile-avatar" aria-label="Avatar de usuario">TU</span>
-            <div className="od-profile-meta"><strong>Tu perfil</strong><span>Personaliza tu espacio</span></div>
+            <span className="od-profile-avatar" aria-label="Avatar de usuario">{profileAvatar ? <img src={profileAvatar} alt="" /> : profileName.slice(0, 2).toUpperCase()}</span>
+            <div className="od-profile-meta"><strong>{profileName}</strong><span>Personaliza tu espacio</span></div>
             <Link className="od-profile-link" href="/profile" aria-label="Abrir mi perfil">Ver →</Link>
           </section>
           <section className="od-sidebar-card od-pro-card">
