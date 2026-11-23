@@ -93,6 +93,9 @@ test('capture deployed preview at mobile, tablet and desktop sizes in both theme
       await visualPage.goto('/');
       await expect(visualPage.getByRole('heading', { name: 'Tu feed profesional' })).toBeVisible();
       await expect(visualPage.locator('html')).toHaveAttribute('data-theme', theme);
+      if (process.env.EXPECTED_PREVIEW_COMMIT) {
+        await expect(visualPage.locator('html')).toHaveAttribute('data-build-commit', process.env.EXPECTED_PREVIEW_COMMIT);
+      }
       await visualPage.screenshot({
         path: `artifacts/visual/${theme}-${width}.png`,
         animations: 'disabled',
