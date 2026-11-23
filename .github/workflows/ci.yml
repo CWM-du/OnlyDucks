@@ -27,7 +27,7 @@ jobs:
       DATABASE_URL: postgresql://ci:ci@localhost:5432/onlyducks
       TEST_DATABASE_URL: postgresql://ci:ci@localhost:5432/onlyducks
       PLAYWRIGHT_BASE_URL: https://only-ducks-git-feat-onlyducks-th-e081ad-trindadeproduction-9727.vercel.app
-      EXPECTED_PREVIEW_COMMIT: ${{ github.sha }}
+      EXPECTED_PREVIEW_COMMIT: ${{ github.event.pull_request.head.sha || github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
