@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useOnlyDucksTheme } from '../components/theme-provider';
 import Link from 'next/link';
 
