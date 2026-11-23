@@ -53,7 +53,26 @@ export default function ProfilePage() {
     setSaveStatus((current) => current === 'storage-unavailable' ? current : 'unsaved');
   }
 
-  function updateAvatar(event: React.ChangeEvent<HTMLInputElement>) {\n    const file = event.target.files?.[0];\n    if (!file) return;\n    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 1_000_000) {\n      setSaveStatus('save-error');\n      event.target.value = '';\n      return;\n    }\n    const reader = new FileReader();\n    reader.onload = () => {\n      if (typeof reader.result === 'string') {\n        setProfile((current) => ({ ...current, avatarDataUrl: reader.result as string }));\n        setSaveStatus('unsaved');\n      }\n    };\n    reader.onerror = () => setSaveStatus('save-error');\n    reader.readAsDataURL(file);\n  }\n\n  function saveProfile(event: React.FormEvent<HTMLFormElement>) {
+  function updateAvatar(event: React.ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 1_000_000) {
+      setSaveStatus('save-error');
+      event.target.value = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (typeof reader.result === 'string') {
+        setProfile((current) => ({ ...current, avatarDataUrl: reader.result as string }));
+        setSaveStatus('unsaved');
+      }
+    };
+    reader.onerror = () => setSaveStatus('save-error');
+    reader.readAsDataURL(file);
+  }
+
+  function saveProfile(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       window.localStorage.setItem(storageKey, JSON.stringify(profile));
