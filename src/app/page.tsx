@@ -46,7 +46,7 @@ export default function HomePage() {
     <main className={`od-social ${theme === 'dark' ? 'od-theme-dark' : 'od-theme-light'}`}>
       <header className="od-topbar">
         <Link className="od-brand" href="/" aria-label="OnlyDucks inicio">
-          <span className="od-brand-mark">o</span><span>Only<em>Ducky</em></span>
+          <span className="od-brand-mark">o</span><span>Only<em>Ducks</em></span>
         </Link>
         <nav className="od-topnav" aria-label="Navegación principal">
           <Link className="active" href="/">Inicio</Link>
@@ -83,7 +83,7 @@ export default function HomePage() {
             <Link className="od-profile-link" href="/profile" aria-label="Abrir mi perfil">Ver →</Link>
           </section>
           <section className="od-sidebar-card od-pro-card">
-            <strong>OnlyDucky Pro</strong>
+            <strong>OnlyDucks Pro</strong>
             <p>Más consultas IA, rutas avanzadas y herramientas para impulsar tu carrera.</p>
             <Link href="/welcome">Descubrir ventajas →</Link>
           </section>
