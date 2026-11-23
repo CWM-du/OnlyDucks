@@ -200,3 +200,11 @@
 .od-social .od-demo-note { margin:10px 0 0 51px; color:#8497a7; font-size:.65rem; line-height:1.45; }
 .od-social .od-empty-result { margin:10px 0 2px; color:#8295a5; font-size:.7rem; line-height:1.5; }
 .od-social.od-theme-dark .od-demo-note,.od-social.od-theme-dark .od-empty-result { color:#8da4b8; }
+
+
+/* Keep the bright account CTA readable in both theme palettes. */
+.od-social .od-top-actions .od-join {
+  color: #061624 !important;
+  opacity: 1 !important;
+  text-shadow: none;
+}
