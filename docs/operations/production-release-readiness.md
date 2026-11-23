@@ -1,88 +1,89 @@
 # Production Release Readiness — OnlyDucks
 
 **Status: BLOCKED — NOT APPROVED FOR PRODUCTION**  
-**Assessment date:** 2026-11-13  
-**Assessed source:** `develop` at `b7121178856b89a26f3f879a8f5d998fb236aa08`  
-This document is a release plan, not deployment authorization.
+**Assessment date:** 2026-11-23  
+**Assessed source:** `develop` at `388ec959636735b6b91ee1292fb05c8c94ba8831` (includes PR #45)
 
-## 1. Decision
+This document records release gates. It is not deployment authorization, client acceptance, or evidence that production has been provisioned.
 
-Do not deploy the current application to public production. The current repository has a useful application foundation and PostgreSQL-backed CI, but critical product integrations and production operating controls are incomplete or unverified. A controlled internal preview is a separate decision and must disclose the missing integrations.
+## 1. Release decision
 
-## 2. Verified state
+Do not deploy OnlyDucks to public production. The current `develop` branch contains a validated frontend preview, but production identity, Oscar, live content, analytics authorization, infrastructure, and operational controls remain incomplete or unverified. The Vercel deployment created for PR #45 was a preview (`target: null`), not production. The Vercel project is not live and `www.onlyducks.es` is not configured.
 
-| Area | Evidence | Status |
+## 2. Verified repository and preview state
+
+| Area | Verified state | Release implication |
 |---|---|---|
-| Source | develop SHA `b7121178856b89a26f3f879a8f5d998fb236aa08` | Snapshot; revalidate before release |
-| CI | PR #42 passed PostgreSQL service, Prisma validation/generation/migration, lint, typecheck, unit tests, build | No Playwright E2E in workflow |
-| Deploy workflow | `.github/workflows/pilot-deploy.yml` only echoes that provider/credentials are not configured | Placeholder |
-| Container | Dockerfile installs with `npm install` | Needs deterministic `npm ci` and image scan |
-| Compose | Local PostgreSQL only, default local credentials, publishes 5432 | Not production topology |
-| Health | `/api/health` always returns `status: ok`, while auth/Oscar/feed are not configured | Not a readiness probe |
-| SSO | Local auth only; no completed shared SSO/OIDC/SAML callback | Blocker |
-| Oscar | Adapter not configured/implemented | Blocker for AI mentor flow |
-| Content | Live content adapter not implemented; feed has no live items | Blocker for live opportunities |
-| Login security | Account lockout exists; code notes IP-aware rate limiting is still needed | Blocker for public exposure |
-| Session concurrency | develop retains read-then-unconditional-write transition | Blocker |
-| PR #41 | Draft; behind develop; CI failed at typecheck, tests/build skipped | Not merge-ready |
-| Branch governance | GitHub reports develop protection disabled | Required checks not enforced |
-| PR #34 | Open, unmergeable, 42 commits; deployment claims not backed by target evidence; unsafe deployment assumptions identified | Do not merge/use |
+| Source | `develop` at `388ec959636735b6b91ee1292fb05c8c94ba8831`; includes merged PR #45 | Reassess every gate against the exact release SHA |
+| Frontend | PR #45 delivered responsive three-column feed, shared light/dark theme, local profile-avatar preview and local discovery filtering | Frontend preview only; local profile state is not authenticated server persistence |
+| PR #45 CI | Prisma validation/migrations, lint, typecheck, unit tests, build and 10 Playwright Chromium E2E tests passed; run [45170239529](https://github.com/CWM-du/OnlyDucks/actions/runs/45170239529) | Evidence applies to PR #45 head SHA, not automatically to later release candidates |
+| Preview hosting | Vercel preview [only-ducks-1ato2pwav-trindadeproduction-9727.vercel.app](https://only-ducks-1ato2pwav-trindadeproduction-9727.vercel.app); deployment READY, `target: null` | Not production; no production domain configured |
+| Identity | Local authentication only; shared production SSO/OIDC/SAML is not completed | Blocker |
+| Oscar | Production API contract, endpoint and credentials are not available/verified; no proven live mentor conversation | Blocker for AI mentor flow |
+| Content | Approved live content-source integration is not verified; current feed content is preview/demo | Blocker for live opportunities |
+| Analytics | Client-supplied identity and cross-user report authorization require remediation and tests | Security blocker |
+| Session concurrency | PR #41 proposes conditional ACTIVE-state transition and a PostgreSQL race test; it remains unmerged pending actual CI execution evidence | Blocker until merged and validated |
+| Deployment | Pilot deploy workflow is a placeholder; no verified production target, deployment, migration or production smoke evidence | Blocker |
+| Domain | `www.onlyducks.es` is not configured in the Vercel project | Blocker |
+| PR #34 | Open, unmergeable handover/deployment PR with unsupported completion claims and unsafe deployment assumptions | Must not be used as a release candidate |
 
 ## 3. Mandatory release gates
 
 ### Product integrations
-- [ ] Select and configure the approved identity provider; test OIDC/SAML callback, issuer/audience, logout, expiry, revocation, account linking, and key rotation.
-- [ ] Confirm Oscar production contract, endpoint, credentials, quotas, timeout/retry behavior, privacy terms; complete real mentor conversation tests.
-- [ ] Configure approved live sources for articles/jobs/products; test freshness, attribution, URL validation, deduplication, empty/error states.
-- [ ] Approve explicit degraded-mode behavior for unavailable integrations.
+- [ ] Select and configure the approved identity provider; verify OIDC/SAML issuer, audience, callbacks, logout, expiry, revocation, account linking and key rotation.
+- [ ] Confirm Oscar production contract, endpoint, credential owner, quotas, timeout/retry behavior and data-processing terms; complete real mentor-conversation tests.
+- [ ] Configure approved live sources for articles/jobs/products; verify freshness, attribution, URL validation, deduplication, empty/error states and source permissions.
+- [ ] Approve degraded-mode behavior when required integrations are unavailable.
+- [ ] Implement authenticated server-side profile persistence and approved avatar/object storage if cross-device profile continuity is required.
 
 ### Security and correctness
+- [ ] Merge the atomic mentor-session transition only after required CI passes and the PostgreSQL concurrency integration test is proven to execute (not skip).
 - [ ] Implement distributed IP-aware rate limiting for login and sensitive endpoints.
-- [ ] Fix/rebase PR #41, merge only after typecheck, unit tests, PostgreSQL concurrency integration test, and production build pass.
-- [ ] Standardize analytics on one canonical user ID for browser and server events.
-- [ ] Bound analytics request bytes, schema depth/size, event/property allow-list, and request rates.
+- [ ] Use one canonical authenticated user identity for browser and server analytics; reject client-forged identity.
+- [ ] Enforce role-based authorization on analytics reads; prevent cross-user/global report access without explicit privilege.
+- [ ] Bound analytics request bytes, schema depth/size, event/property allow-list and request rates.
 - [ ] Verify production origin/host allow-list and secure cookies behind the actual proxy.
-- [ ] Remove demo/default credentials, password-reset shortcuts, debug endpoints, and secrets from images/logs.
+- [ ] Remove demo/default credentials, password-reset shortcuts, debug endpoints and secrets from images/logs.
 - [ ] Run dependency and container vulnerability scans; resolve or formally accept high/critical findings.
-- [ ] Review authorization, CSRF/origin checks, session revocation, PII retention, and secret rotation.
+- [ ] Review authorization, CSRF/origin checks, session revocation, PII retention and secret rotation.
 
 ### Database and operations
-- [ ] Confirm PostgreSQL provider/region, TLS, network policy, connection pooling/limits, encryption, retention, owner.
+- [ ] Confirm PostgreSQL provider/region, TLS, network policy, connection pooling/limits, encryption, retention and owner.
 - [ ] Configure automated backups and complete a restore drill to an isolated database.
-- [ ] Rehearse migrations on a production-like copy; record lock impact, compatibility, and recovery plan.
-- [ ] Implement separate liveness/readiness. Liveness checks process only; readiness fails if required dependencies (at least DB) are unavailable.
+- [ ] Rehearse migrations on a production-like copy; record lock impact, compatibility and recovery plan.
+- [ ] Implement separate liveness/readiness; readiness must fail when required dependencies (at least DB) are unavailable.
 - [ ] Configure structured logs, error reporting, metrics, uptime monitoring, alert routing and retention; never log secrets or sensitive payloads.
-- [ ] Record incident owner, on-call/escalation path, resource limits, request timeouts, replica policy, and platform health checks.
+- [ ] Record incident owner, on-call/escalation path, resource limits, request timeouts, replica policy and platform health checks.
 
 ### Release governance
-- [ ] Protect develop/release branches; require CI and review.
-- [ ] CI must run lint, typecheck, unit tests, PostgreSQL migrations/integration tests, production build, critical E2E, dependency audit, and container scan.
-- [ ] Build once from immutable SHA; record image digest, SBOM, provenance, and migration ID.
-- [ ] Deployment workflow targets a named environment, uses least privilege, requires explicit production approval, and supports gradual rollout.
-- [ ] Staging deploy and real-provider smoke tests pass.
-- [ ] Product/stakeholder acceptance is recorded against `docs/testing/pilot-acceptance.md`.
+- [ ] Protect develop/release branches; require CI and review. Branch protection was observed disabled on develop at the assessment SHA.
+- [ ] CI must run lint, typecheck, unit tests, PostgreSQL migrations/integration tests, production build, critical E2E, dependency audit and container scan.
+- [ ] Build once from immutable SHA; record image digest, SBOM, provenance and migration ID.
+- [ ] Deployment workflow must target a named environment, use least privilege, require explicit production approval and support gradual rollout.
+- [ ] Staging deployment and real-provider smoke tests pass.
+- [ ] Product/client/stakeholder acceptance is recorded against the current acceptance document; a merged PR or preview review is not client signoff.
 - [ ] Rollback and database recovery are rehearsed.
 
 ## 4. Inputs still required
 
-Do not guess or commit secrets. Supply:
+Do not guess or commit secrets. Confirm:
 - Hosting provider, production project/environment, hostname and DNS owner.
 - PostgreSQL provider/region/connection mode/backup policy.
 - Identity provider and approved production callback/logout URLs.
-- Oscar API production base URL, credential owner, quotas, and data-processing terms.
+- Oscar API production base URL, credential owner, quotas and data-processing terms.
 - Approved feed sources and credentials, if required.
 - Object storage provider/bucket/policy, if required.
-- Secret manager, secret owners, monitoring provider, alert destination.
-- Deployment approver, incident owner, rollback operator.
+- Secret manager, secret owners, monitoring provider and alert destination.
+- Deployment approver, incident owner and rollback operator.
 
 ## 5. Safe deployment sequence
 
-1. Freeze release candidate from protected branch; record exact SHA.
+1. Freeze a release candidate from a protected branch and record its exact SHA.
 2. Run all required CI and security checks against that SHA.
 3. Build one immutable image; record digest/SBOM/provenance. Promote the same artifact to staging and production.
 4. Provision production resources with managed secrets and private networking. Never use local Compose defaults or demo-user scripts.
-5. Verify database backup; rehearse migration against production-like copy.
-6. Deploy to staging; run migrations once via controlled job, not on every web replica.
+5. Verify database backup; rehearse migration against a production-like copy.
+6. Deploy to staging; run migrations once via a controlled job, not on every web replica.
 7. Run staging smoke tests for readiness/liveness, SSO, session create/transition, Oscar conversation, live feed, analytics attribution, authorization and logout.
 8. Obtain explicit production approval. Deploy canary/rolling with health gates and automatic stop conditions.
 9. Run read-only production smoke checks; verify logs, metrics, DB and integration status without destructive test data.
@@ -90,10 +91,10 @@ Do not guess or commit secrets. Supply:
 
 ## 6. Rollback and recovery
 
-- Stop rollout on failed readiness, elevated 5xx/latency, auth failures, DB saturation, data-integrity issues, or integration failures beyond agreed tolerance.
-- Roll application back to previous immutable image only when schema remains backward-compatible.
+- Stop rollout on failed readiness, elevated 5xx/latency, auth failures, DB saturation, data-integrity issues or integration failures beyond agreed tolerance.
+- Roll application back to the previous immutable image only when schema remains backward-compatible.
 - Never run `prisma migrate reset` or destructive down-migrations in production.
-- For incompatible migrations, use rehearsed forward-fix or point-in-time restore with explicit data-loss assessment and incident approval.
+- For incompatible migrations, use a rehearsed forward-fix or point-in-time restore with explicit data-loss assessment and incident approval.
 - Preserve deployment metadata/logs; verify recovery with read-only health checks and critical user journeys before reopening traffic.
 
 ## 7. Smoke-test acceptance matrix
@@ -108,14 +109,14 @@ Do not guess or commit secrets. Supply:
 | Mentor | Real Oscar-backed interaction succeeds | Redacted trace |
 | Feed | Fresh approved articles/jobs/products returned | Source/freshness report |
 | Analytics | Authenticated event uses canonical ID; cross-user read denied | Test report |
-| Security | Rate limits, origin, payload limits, cookie flags pass | Test/scan report |
+| Security | Rate limits, origin, payload limits and cookie flags pass | Test/scan report |
 | Recovery | Image rollback and DB recovery demonstrated | Exercise record |
 
-## 8. Relevant PR evidence
+## 8. Relevant PR evidence and exclusions
 
-- PR #42 visual refresh merged to develop; PR validation passed. This is not a production deployment.
-- PR #39 backend recovery merged after PostgreSQL integration validation; it does not deliver SSO, Oscar, or live feed.
-- PR #41 is a draft; CI failed in TypeScript because tests still reference removed `updateSessionStatus`; unit tests and build were skipped.
-- PR #34 must not be used as deployment candidate. Its checked boxes do not prove target provisioning or tests.
+- PR #45 merged to develop and passed its preview CI/E2E suite. It did not deploy to production or implement the missing live integrations.
+- PR #41 remains unmerged until the PostgreSQL concurrency test is demonstrably executed in CI.
+- PR #34 is not a deployment record or release candidate. Its checked boxes do not establish a provisioned target, deployed artifact, production smoke tests, external integration success or stakeholder acceptance.
+- A Vercel preview marked READY is not a production deployment. No production release is authorized by this document.
 
-**Release remains BLOCKED until every mandatory gate has verifiable evidence and the production environment inputs are confirmed.**
+**Release remains BLOCKED until every mandatory gate has verifiable evidence against the exact release SHA, required client acceptance is recorded, and the production environment inputs are confirmed.**
