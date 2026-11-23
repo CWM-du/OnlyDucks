@@ -46,3 +46,23 @@ test('feed remains usable at a mobile viewport', async ({ page }) => {
   }));
   expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
 });
+
+
+test('feed layout has no horizontal overflow at desktop, tablet and mobile widths', async ({ page }) => {
+  for (const width of [390, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    const dimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      content: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.content, `horizontal overflow at ${width}px`).toBeLessThanOrEqual(dimensions.viewport);
+  }
+});
+
+test('primary feed destinations resolve', async ({ page }) => {
+  for (const route of ['/feed', '/roadmap', '/mentors', '/agent', '/profile', '/welcome']) {
+    const response = await page.goto(route);
+    expect(response?.status(), `route ${route}`).toBeLessThan(400);
+  }
+});
