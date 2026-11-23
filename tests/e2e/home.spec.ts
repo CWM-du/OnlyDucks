@@ -12,7 +12,7 @@ test('theme preference is shared across routes and persists after reload', async
   await page.goto('/');
   await page.getByRole('button', { name: 'Cambiar al tema oscuro' }).click();
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-  await page.getByRole('link', { name: 'Tu perfil' }).click();
+  await page.getByRole('link', { name: 'Abrir mi perfil' }).click();
   await expect(page).toHaveURL(/\/profile$/);
   await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
   await page.reload();
