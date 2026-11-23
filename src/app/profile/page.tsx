@@ -3,8 +3,8 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-type Profile = { displayName: string; role: string; level: string; interests: string; goal: string; bio: string };
-const emptyProfile: Profile = { displayName: '', role: '', level: 'Exploring', interests: '', goal: '', bio: '' };
+type Profile = { displayName: string; role: string; level: string; interests: string; goal: string; bio: string; avatarDataUrl: string };
+const emptyProfile: Profile = { displayName: '', role: '', level: 'Exploring', interests: '', goal: '', bio: '', avatarDataUrl: '' };
 const storageKey = 'onlyducks:developer-profile:v1';
 const experienceLevels = ['Exploring', 'Beginner', 'Intermediate', 'Advanced', 'Experienced professional'];
 
@@ -26,6 +26,7 @@ function readProfile(value: string | null): Profile {
       interests: readText('interests', 180),
       goal: readText('goal', 120),
       bio: readText('bio', 360),
+      avatarDataUrl: typeof candidate.avatarDataUrl === 'string' && candidate.avatarDataUrl.startsWith('data:image/') && candidate.avatarDataUrl.length <= 1_500_000 ? candidate.avatarDataUrl : '',
     };
   } catch {
     return emptyProfile;
@@ -52,7 +53,7 @@ export default function ProfilePage() {
     setSaveStatus((current) => current === 'storage-unavailable' ? current : 'unsaved');
   }
 
-  function saveProfile(event: React.FormEvent<HTMLFormElement>) {
+  function updateAvatar(event: React.ChangeEvent<HTMLInputElement>) {\n    const file = event.target.files?.[0];\n    if (!file) return;\n    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 1_000_000) {\n      setSaveStatus('save-error');\n      event.target.value = '';\n      return;\n    }\n    const reader = new FileReader();\n    reader.onload = () => {\n      if (typeof reader.result === 'string') {\n        setProfile((current) => ({ ...current, avatarDataUrl: reader.result as string }));\n        setSaveStatus('unsaved');\n      }\n    };\n    reader.onerror = () => setSaveStatus('save-error');\n    reader.readAsDataURL(file);\n  }\n\n  function saveProfile(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     try {
       window.localStorage.setItem(storageKey, JSON.stringify(profile));
@@ -94,7 +95,7 @@ export default function ProfilePage() {
       <div className="profile-layout">
         <form className="profile-form" onSubmit={saveProfile}>
           <div className="section-heading"><div><p className="eyebrow">YOUR DETAILS</p><h2>Developer profile</h2></div><span className="section-note">Optional fields</span></div>
-          <label className="field-label" htmlFor="displayName">Display name</label>
+          <label className="field-label" htmlFor="avatarUpload">Profile avatar</label>\n          <div className="profile-avatar-editor">\n            <span className="profile-avatar" aria-hidden="true">{profile.avatarDataUrl ? <img src={profile.avatarDataUrl} alt="" /> : profile.displayName.trim() ? profile.displayName.trim().slice(0, 2).toUpperCase() : 'OD'}</span>\n            <div><input id="avatarUpload" className="form-control" type="file" accept="image/png,image/jpeg,image/webp" onChange={updateAvatar} /><small>PNG, JPG or WebP · max 1 MB. Stored on this device in this preview.</small></div>\n          </div>\n          <label className="field-label" htmlFor="displayName">Display name</label>
           <input id="displayName" className="form-control" value={profile.displayName} onChange={(e) => update('displayName', e.target.value)} maxLength={60} placeholder="How should we call you?" />
           <label className="field-label" htmlFor="role">Current role or focus</label>
           <input id="role" className="form-control" value={profile.role} onChange={(e) => update('role', e.target.value)} maxLength={80} placeholder="e.g. Frontend developer, student, career changer" />
@@ -107,11 +108,11 @@ export default function ProfilePage() {
           <label className="field-label" htmlFor="bio">A little about you</label>
           <textarea id="bio" className="form-control form-textarea" value={profile.bio} onChange={(e) => update('bio', e.target.value)} maxLength={360} rows={4} placeholder="What motivates you to build and learn?" />
           <div className="form-actions"><button className="button button-primary" type="submit" disabled={!ready}>Save on this device</button><button className="button button-secondary" type="button" onClick={clearProfile}>Clear profile</button></div>
-          <p className="form-feedback" id="profile-form-status" role="status" aria-live="polite" aria-atomic="true">{saveStatus === 'storage-unavailable' ? 'Browser storage is unavailable. Profile changes remain only while this page is open and will be lost when you leave or refresh.' : saveStatus === 'save-error' ? 'Could not save your profile in this browser. Check available storage and try again.' : saveStatus === 'clear-error' ? 'The form was cleared, but saved data could not be removed from this browser.' : saveStatus === 'cleared' ? 'Profile cleared from this browser.' : saveStatus === 'saved' ? 'Profile saved in this browser.' : 'Changes are not saved until you choose Save.'}</p>
+          <p className="form-feedback" id="profile-form-status" role="status" aria-live="polite" aria-atomic="true">{saveStatus === 'storage-unavailable' ? 'Browser storage is unavailable. Profile changes remain only while this page is open and will be lost when you leave or refresh.' : saveStatus === 'save-error' ? 'Could not save your profile in this browser. Check available storage and try again.' : saveStatus === 'clear-error' ? 'The form was cleared, but saved data could not be removed from this browser.' : saveStatus === 'cleared' ? 'Profile and avatar cleared from this browser.' : saveStatus === 'saved' ? 'Profile and avatar saved in this browser.' : 'Changes are not saved until you choose Save.'}</p>
         </form>
 
         <aside className="profile-preview" aria-label="Live profile preview">
-          <p className="eyebrow">LIVE PREVIEW</p><div className="profile-avatar" aria-hidden="true">{profile.displayName.trim() ? profile.displayName.trim().slice(0, 2).toUpperCase() : 'OD'}</div>
+          <p className="eyebrow">LIVE PREVIEW</p><div className="profile-avatar" aria-hidden="true">{profile.avatarDataUrl ? <img src={profile.avatarDataUrl} alt="" /> : profile.displayName.trim() ? profile.displayName.trim().slice(0, 2).toUpperCase() : 'OD'}</div>
           <h2>{profile.displayName.trim() || 'Your name here'}</h2><p className="profile-role">{profile.role || 'Your role or current focus'}</p>
           <span className="profile-level">{profile.level}</span>
           <div className="preview-divider" /><h3>Interested in</h3><p>{profile.interests || 'Your technologies and interests will appear here.'}</p>
