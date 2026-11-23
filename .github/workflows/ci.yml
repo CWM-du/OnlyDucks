@@ -27,6 +27,7 @@ jobs:
       DATABASE_URL: postgresql://ci:ci@localhost:5432/onlyducks
       TEST_DATABASE_URL: postgresql://ci:ci@localhost:5432/onlyducks
       APP_BASE_URL: https://only-ducks-git-feat-onlyducks-th-e081ad-trindadeproduction-9727.vercel.app
+      EXPECTED_PREVIEW_COMMIT: ${{ github.sha }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -67,8 +68,8 @@ jobs:
       - name: Wait for current preview to respond
         run: |
           for attempt in $(seq 1 60); do
-            if curl --fail --silent --show-error "$APP_BASE_URL" >/dev/null; then
-              echo "Preview is responding: $APP_BASE_URL"
+            if curl --fail --silent --show-error "$APP_BASE_URL" | grep -q "$EXPECTED_PREVIEW_COMMIT"; then
+              echo "Correct preview commit is responding: $EXPECTED_PREVIEW_COMMIT"
               exit 0
             fi
             echo "Waiting for preview ($attempt/60)..."
