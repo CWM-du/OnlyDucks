@@ -194,3 +194,9 @@
  .od-social .od-theme-toggle span { font-size:.95rem; }
  .od-social.od-theme-dark .od-bottom-nav { background:rgba(7,17,31,.97); }
 }
+
+
+/* Explicit preview states for controls that are not connected to live services. */
+.od-social .od-demo-note { margin:10px 0 0 51px; color:#8497a7; font-size:.65rem; line-height:1.45; }
+.od-social .od-empty-result { margin:10px 0 2px; color:#8295a5; font-size:.7rem; line-height:1.5; }
+.od-social.od-theme-dark .od-demo-note,.od-social.od-theme-dark .od-empty-result { color:#8da4b8; }
