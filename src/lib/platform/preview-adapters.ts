@@ -10,7 +10,7 @@ const identity: IdentityProvider = {
   async getIdentity() {
     return {
       status: 'not-connected',
-      explanation: 'Shared sign-in is not simulated. Connect the approved SSO provider before enabling identity.',
+      explanation: 'Shared sign-in is intentionally not simulated in the client preview. Connect the agreed SSO provider before authenticated pilot use.',
     };
   },
 };
@@ -22,7 +22,7 @@ const mentors: MentorProvider = {
   async startSession() {
     return {
       status: 'not-connected',
-      explanation: 'Mentor sessions require the approved Oscar API and server-side session service.',
+      explanation: 'Oscar owns the Oscar API implementation and connection. Live mentor sessions remain disabled until that integration and server-side session controls are ready.',
     };
   },
 };
@@ -50,31 +50,31 @@ export const previewIntegrationCards = [
   {
     id: 'identity',
     name: 'Shared identity & SSO',
-    owner: 'DEV02',
+    owner: 'SSO integration',
     availability: 'not-connected',
-    explanation: 'A provider contract is ready. Authentication is never faked in the browser preview.',
-    replacement: 'Replace previewProviders.identity with the approved SSO-backed identity provider.',
+    explanation: 'SSO is a priority before authenticated pilot use. It is intentionally not simulated in the visual client preview.',
+    replacement: 'Connect the agreed notodoescodigo identity provider and verify login, callback, logout, expiry and account mapping.',
   },
   {
     id: 'mentors',
     name: 'Mentor profiles & sessions',
-    owner: 'DEV01 / DEV02',
+    owner: 'Oscar',
     availability: 'not-connected',
-    explanation: 'Session creation stays disabled until Oscar API, server persistence, and access controls are ready.',
-    replacement: 'Replace previewProviders.mentors with the Oscar API + session service adapter.',
+    explanation: 'Mentor profile concepts are visible, but live conversations are not connected. Oscar will implement and connect the Oscar API.',
+    replacement: 'Oscar replaces the preview mentor adapter with the agreed Oscar API and session-service integration.',
   },
   {
     id: 'content',
     name: 'Articles, jobs & products',
     owner: 'Content integration',
     availability: 'not-connected',
-    explanation: 'No fabricated feed entries are shown. The preview returns an empty collection.',
+    explanation: 'No fabricated feed entries are shown. The preview returns an empty collection until the approved source is connected.',
     replacement: 'Replace previewProviders.content with the approved notodoescodigo.com feed adapter.',
   },
   {
     id: 'analytics',
     name: 'Attribution & analytics',
-    owner: 'DEV01 / DEV03',
+    owner: 'Analytics integration',
     availability: 'not-connected',
     explanation: 'The preview adapter intentionally emits no production analytics events.',
     replacement: 'Replace previewProviders.analytics with the approved analytics endpoint and consent rules.',
@@ -82,9 +82,9 @@ export const previewIntegrationCards = [
   {
     id: 'agent',
     name: 'AI agent workspace',
-    owner: 'DEV03 / DEV01',
+    owner: 'Local visual demo',
     availability: 'demo',
-    explanation: 'The agent page runs a deterministic local adapter for planning and blueprint interactions.',
-    replacement: 'Replace the AgentAdapter with the approved Oscar API client without changing the UI contract.',
+    explanation: 'The agent page runs a deterministic local adapter for planning and blueprint interactions; it does not call an AI model.',
+    replacement: 'Oscar can connect the approved AI backend while preserving the reviewed UI contract.',
   },
 ] as const;

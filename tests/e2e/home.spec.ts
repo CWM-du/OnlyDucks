@@ -1,8 +1,108 @@
 import { expect, test } from '@playwright/test';
 
-test('home page communicates the OnlyDucks concept', async ({ page }) => {
+test('homepage presents the three-column professional feed', async ({ page }) => {
   await page.goto('/');
-  await expect(page.getByRole('heading', { name: /a clearer path from learning to opportunity/i })).toBeVisible();
-  await expect(page.getByRole('link', { name: /explore mentors/i })).toBeVisible();
-  await expect(page.getByRole('link', { name: /view opportunities/i })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Tu feed profesional' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Secciones' })).toBeVisible();
+  await expect(page.getByRole('complementary', { name: 'Información complementaria' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Abrir mi perfil' })).toBeVisible();
+});
+
+test('theme preference is shared across routes and persists after reload', async ({ page }) => {
+  await page.goto('/');
+  await page.getByRole('button', { name: 'Cambiar al tema oscuro' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.getByRole('link', { name: 'Abrir mi perfil' }).click();
+  await expect(page).toHaveURL(/\/profile$/);
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.reload();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+  await page.getByRole('button', { name: 'Switch to marine blue light theme' }).click();
+  await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+});
+
+test('profile avatar can be uploaded, previewed and saved locally', async ({ page }) => {
+  await page.goto('/profile');
+  await page.locator('#avatarUpload').setInputFiles({
+    name: 'avatar.png',
+    mimeType: 'image/png',
+    buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/pXcAAAAASUVORK5CYII=', 'base64'),
+  });
+  await expect(page.locator('.profile-preview .profile-avatar img')).toBeVisible();
+  await page.getByRole('button', { name: 'Save on this device' }).click();
+  await expect(page.getByRole('status')).toContainText('Profile and avatar saved in this browser.');
+  await page.reload();
+  await expect(page.locator('.profile-preview .profile-avatar img')).toBeVisible();
+});
+
+test('feed remains usable at a mobile viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Tu feed profesional' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Navegación móvil' })).toBeVisible();
+  const dimensions = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    content: document.documentElement.scrollWidth,
+  }));
+  expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
+});
+
+
+test('feed layout has no horizontal overflow at desktop, tablet and mobile widths', async ({ page }) => {
+  for (const width of [390, 768, 1280]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    const dimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      content: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.content, `horizontal overflow at ${width}px`).toBeLessThanOrEqual(dimensions.viewport);
+  }
+});
+
+test('primary feed destinations resolve', async ({ page }) => {
+  for (const route of ['/feed', '/roadmap', '/mentors', '/agent', '/profile', '/welcome']) {
+    const response = await page.goto(route);
+    expect(response?.status(), `route ${route}`).toBeLessThan(400);
+  }
+});
+
+
+test('feed search filters preview topics and opportunities', async ({ page }) => {
+  await page.goto('/');
+  const search = page.getByRole('searchbox', { name: 'Buscar temas u oportunidades' });
+  await search.fill('Django');
+  await expect(page.getByText('#Django')).toBeVisible();
+  await expect(page.getByText('Junior Python Developer')).toHaveCount(0);
+  await search.fill('no existe');
+  await expect(page.getByText('No hay temas que coincidan.')).toBeVisible();
+  await expect(page.getByText('No hay oportunidades que coincidan.')).toBeVisible();
+});
+
+
+test('capture deployed preview at mobile, tablet and desktop sizes in both themes', async ({ page }) => {
+  const fs = await import('node:fs/promises');
+  await fs.mkdir('artifacts/visual', { recursive: true });
+  for (const theme of ['light', 'dark']) {
+    for (const width of [390, 768, 1280]) {
+      const visualPage = await page.context().newPage();
+      await visualPage.addInitScript((selectedTheme) => {
+        window.localStorage.setItem('onlyducks-theme', selectedTheme);
+      }, theme);
+      await visualPage.setViewportSize({ width, height: 900 });
+      await visualPage.goto('/');
+      await expect(visualPage.getByRole('heading', { name: 'Tu feed profesional' })).toBeVisible();
+      await expect(visualPage.locator('html')).toHaveAttribute('data-theme', theme);
+      const joinColor = await visualPage.locator('.od-join').evaluate((element) => getComputedStyle(element).color);
+      expect(joinColor).toBe('rgb(6, 22, 36)');
+      if (process.env.EXPECTED_PREVIEW_COMMIT) {
+        await expect(visualPage.locator('html')).toHaveAttribute('data-build-commit', process.env.EXPECTED_PREVIEW_COMMIT);
+      }
+      await visualPage.screenshot({
+        path: `artifacts/visual/${theme}-${width}.png`,
+        animations: 'disabled',
+      });
+      await visualPage.close();
+    }
+  }
 });
