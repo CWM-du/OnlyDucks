@@ -48,6 +48,12 @@ jobs:
       - name: Apply migrations to clean PostgreSQL
         run: npm run db:deploy
 
+      - name: Run PostgreSQL integration tests (must not skip)
+        shell: bash
+        run: |
+          test -n "$TEST_DATABASE_URL"
+          npm run test -- src/modules/mentors/postgres.integration.test.ts --reporter=verbose
+
       - name: Lint
         run: npm run lint
 
