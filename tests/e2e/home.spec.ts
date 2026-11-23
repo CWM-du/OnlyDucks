@@ -66,3 +66,15 @@ test('primary feed destinations resolve', async ({ page }) => {
     expect(response?.status(), `route ${route}`).toBeLessThan(400);
   }
 });
+
+
+test('feed search filters preview topics and opportunities', async ({ page }) => {
+  await page.goto('/');
+  const search = page.getByRole('searchbox', { name: 'Buscar temas u oportunidades' });
+  await search.fill('Django');
+  await expect(page.getByText('#Django')).toBeVisible();
+  await expect(page.getByText('Junior Python Developer')).toHaveCount(0);
+  await search.fill('no existe');
+  await expect(page.getByText('No hay temas que coincidan.')).toBeVisible();
+  await expect(page.getByText('No hay oportunidades que coincidan.')).toBeVisible();
+});
