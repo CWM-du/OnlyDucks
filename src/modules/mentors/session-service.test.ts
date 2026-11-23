@@ -138,7 +138,7 @@ describe('SessionService', () => {
     const analytics = new AnalyticsService();
     vi.spyOn(repo, 'ensureUser').mockResolvedValue(mockUser);
     vi.spyOn(repo, 'getSessionById').mockResolvedValue(mockActiveSession);
-    vi.spyOn(repo, 'updateSessionStatus').mockResolvedValue({
+    vi.spyOn(repo, 'transitionActiveSession').mockResolvedValue({
       ...mockActiveSession,
       status: MentorSessionStatus.COMPLETED,
       endedAt: new Date(),
@@ -155,8 +155,9 @@ describe('SessionService', () => {
     );
 
     expect(result.status).toBe(MentorSessionStatus.COMPLETED);
-    expect(repo.updateSessionStatus).toHaveBeenCalledWith(
+    expect(repo.transitionActiveSession).toHaveBeenCalledWith(
       'session-cuid-1',
+      mockUser.id,
       MentorSessionStatus.COMPLETED,
       expect.any(Date),
     );
@@ -172,7 +173,7 @@ describe('SessionService', () => {
     const analytics = new AnalyticsService();
     vi.spyOn(repo, 'ensureUser').mockResolvedValue(mockUser);
     vi.spyOn(repo, 'getSessionById').mockResolvedValue(mockActiveSession);
-    vi.spyOn(repo, 'updateSessionStatus').mockResolvedValue({
+    vi.spyOn(repo, 'transitionActiveSession').mockResolvedValue({
       ...mockActiveSession,
       status: MentorSessionStatus.FAILED,
       endedAt: new Date(),
