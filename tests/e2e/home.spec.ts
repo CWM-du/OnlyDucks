@@ -34,3 +34,15 @@ test('profile avatar can be uploaded, previewed and saved locally', async ({ pag
   await page.reload();
   await expect(page.locator('.profile-preview .profile-avatar img')).toBeVisible();
 });
+
+test('feed remains usable at a mobile viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+  await expect(page.getByRole('heading', { name: 'Tu feed profesional' })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Navegación móvil' })).toBeVisible();
+  const dimensions = await page.evaluate(() => ({
+    viewport: document.documentElement.clientWidth,
+    content: document.documentElement.scrollWidth,
+  }));
+  expect(dimensions.content).toBeLessThanOrEqual(dimensions.viewport);
+});
