@@ -97,7 +97,7 @@ export default function ProfilePage() {
       <a className="skip-link" href="#page-content">Skip to main content</a>
       <main className="app-shell">
       <header className="topbar">
-        <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
+        <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>OnlyDucks</Link>
         <nav className="main-nav" aria-label="Main navigation">
           <Link className="nav-link" href="/">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/agent">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link nav-link-active" href="/profile" aria-current="page">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link>
         </nav>
@@ -114,7 +114,12 @@ export default function ProfilePage() {
       <div className="profile-layout">
         <form className="profile-form" onSubmit={saveProfile}>
           <div className="section-heading"><div><p className="eyebrow">YOUR DETAILS</p><h2>Developer profile</h2></div><span className="section-note">Optional fields</span></div>
-          <label className="field-label" htmlFor="avatarUpload">Profile avatar</label>\n          <div className="profile-avatar-editor">\n            <span className="profile-avatar" aria-hidden="true">{profile.avatarDataUrl ? <img src={profile.avatarDataUrl} alt="" /> : profile.displayName.trim() ? profile.displayName.trim().slice(0, 2).toUpperCase() : 'OD'}</span>\n            <div><input id="avatarUpload" className="form-control" type="file" accept="image/png,image/jpeg,image/webp" onChange={updateAvatar} /><small>PNG, JPG or WebP · max 1 MB. Stored on this device in this preview.</small></div>\n          </div>\n          <label className="field-label" htmlFor="displayName">Display name</label>
+          <label className="field-label" htmlFor="avatarUpload">Profile avatar</label>
+          <div className="profile-avatar-editor">
+            <span className="profile-avatar" aria-hidden="true">{profile.avatarDataUrl ? <img src={profile.avatarDataUrl} alt="" /> : profile.displayName.trim() ? profile.displayName.trim().slice(0, 2).toUpperCase() : 'OD'}</span>
+            <div><input id="avatarUpload" className="form-control" type="file" accept="image/png,image/jpeg,image/webp" onChange={updateAvatar} /><small>PNG, JPG or WebP · max 1 MB. Stored on this device in this preview.</small></div>
+          </div>
+          <label className="field-label" htmlFor="displayName">Display name</label>
           <input id="displayName" className="form-control" value={profile.displayName} onChange={(e) => update('displayName', e.target.value)} maxLength={60} placeholder="How should we call you?" />
           <label className="field-label" htmlFor="role">Current role or focus</label>
           <input id="role" className="form-control" value={profile.role} onChange={(e) => update('role', e.target.value)} maxLength={80} placeholder="e.g. Frontend developer, student, career changer" />
@@ -140,7 +145,7 @@ export default function ProfilePage() {
           <span className="preview-footnote">Preview only · Not publicly visible</span>
         </aside>
       </div>
-      <footer className="site-footer"><Link className="footer-brand" href="/">onlyducks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
+      <footer className="site-footer"><Link className="footer-brand" href="/">OnlyDucks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
     </main>
     </>
   );
