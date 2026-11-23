@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useOnlyDucksTheme } from '../components/theme-provider';
 import Link from 'next/link';
 
 const navigation = [
@@ -25,18 +25,7 @@ const jobs = [
 ];
 
 export default function HomePage() {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
-
-  useEffect(() => {
-    const savedTheme = window.localStorage.getItem('onlyducks-theme');
-    if (savedTheme === 'dark' || savedTheme === 'light') setTheme(savedTheme);
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem('onlyducks-theme', theme);
-  }, [theme]);
-
-  const toggleTheme = () => setTheme((current) => current === 'light' ? 'dark' : 'light');
+  const { theme, toggleTheme } = useOnlyDucksTheme();
 
   return (
     <main className={`od-social ${theme === 'dark' ? 'od-theme-dark' : 'od-theme-light'}`}>
