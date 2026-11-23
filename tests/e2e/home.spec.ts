@@ -5,7 +5,7 @@ test('homepage presents the three-column professional feed', async ({ page }) =>
   await expect(page.getByRole('heading', { name: 'Tu feed profesional' })).toBeVisible();
   await expect(page.getByRole('navigation', { name: 'Secciones' })).toBeVisible();
   await expect(page.getByRole('complementary', { name: 'Información complementaria' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Tu perfil' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Abrir mi perfil' })).toBeVisible();
 });
 
 test('theme preference is shared across routes and persists after reload', async ({ page }) => {
