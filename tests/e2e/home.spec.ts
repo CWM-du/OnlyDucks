@@ -93,6 +93,8 @@ test('capture deployed preview at mobile, tablet and desktop sizes in both theme
       await visualPage.goto('/');
       await expect(visualPage.getByRole('heading', { name: 'Tu feed profesional' })).toBeVisible();
       await expect(visualPage.locator('html')).toHaveAttribute('data-theme', theme);
+      const joinColor = await visualPage.locator('.od-join').evaluate((element) => getComputedStyle(element).color);
+      expect(joinColor).toBe('rgb(6, 22, 36)');
       if (process.env.EXPECTED_PREVIEW_COMMIT) {
         await expect(visualPage.locator('html')).toHaveAttribute('data-build-commit', process.env.EXPECTED_PREVIEW_COMMIT);
       }
