@@ -78,3 +78,26 @@ test('feed search filters preview topics and opportunities', async ({ page }) =>
   await expect(page.getByText('No hay temas que coincidan.')).toBeVisible();
   await expect(page.getByText('No hay oportunidades que coincidan.')).toBeVisible();
 });
+
+
+test('capture deployed preview at mobile, tablet and desktop sizes in both themes', async ({ page }) => {
+  const fs = await import('node:fs/promises');
+  await fs.mkdir('artifacts/visual', { recursive: true });
+  for (const theme of ['light', 'dark']) {
+    for (const width of [390, 768, 1280]) {
+      const visualPage = await page.context().newPage();
+      await visualPage.addInitScript((selectedTheme) => {
+        window.localStorage.setItem('onlyducks-theme', selectedTheme);
+      }, theme);
+      await visualPage.setViewportSize({ width, height: 900 });
+      await visualPage.goto('/');
+      await expect(visualPage.getByRole('heading', { name: 'Tu feed profesional' })).toBeVisible();
+      await expect(visualPage.locator('html')).toHaveAttribute('data-theme', theme);
+      await visualPage.screenshot({
+        path: `artifacts/visual/${theme}-${width}.png`,
+        animations: 'disabled',
+      });
+      await visualPage.close();
+    }
+  }
+});
