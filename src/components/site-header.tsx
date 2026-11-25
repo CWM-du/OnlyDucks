@@ -1,14 +1,14 @@
 import Link from 'next/link';
 
 const links = [
-  { href: '/', label: 'Overview' },
-  { href: '/welcome', label: 'Start here' },
-  { href: '/mentors', label: 'Mentors' },
-  { href: '/agent', label: 'Agent' },
+  { href: '/', label: 'Inicio' },
+  { href: '/welcome', label: 'Empieza aquí' },
+  { href: '/mentors', label: 'Mentores' },
+  { href: '/agent', label: 'Agente' },
   { href: '/sandbox', label: 'Sandbox' },
   { href: '/roadmap', label: 'Roadmap' },
-  { href: '/profile', label: 'Profile' },
-  { href: '/feed', label: 'Opportunities' },
+  { href: '/profile', label: 'Perfil' },
+  { href: '/feed', label: 'Oportunidades' },
 ];
 
 export function SiteHeader({ active, status = 'Preview' }: { active?: string; status?: string }) {
