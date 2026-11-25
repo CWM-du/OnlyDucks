@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteHeader } from '../../components/site-header';
+import { SiteFooter } from '../../components/site-footer';
+
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -52,7 +55,7 @@ export default function WelcomePage() {
     <>
       <a className="skip-link" href="#page-content">Skip to main content</a>
       <main className="app-shell">
-      <header className="topbar"><Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link><nav className="main-nav" aria-label="Main navigation"><Link className="nav-link" href="/">Overview</Link><Link className="nav-link nav-link-active" href="/welcome" aria-current="page">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/agent">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link" href="/profile">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link></nav><span className="environment-pill"><span className="status-dot" /> Preview</span></header>
+      <SiteHeader active="/welcome" status="Preview" />
       <section id="page-content" tabIndex={-1} className="welcome-hero" aria-labelledby="page-title"><p className="eyebrow"><span className="eyebrow-line" /> YOUR FIRST STEPS</p><h1 id="page-title">Welcome to a more <span className="heading-accent">connected</span> developer journey.</h1><p className="hero-copy">OnlyDucks connects what you want to understand with what you can do next. Start with one small action; there is no setup required for this preview.</p><div className="welcome-hero-note"><span className="welcome-note-mark">i</span><p><strong>Learn → Demonstrate → Opportunity.</strong> Explore a learning approach, turn insight into practice, and use that momentum to decide what comes next.</p></div></section>
       <section className="onboarding-checklist" aria-labelledby="checklist-title">
         <div className="section-heading"><div><p className="eyebrow">YOUR STARTING CHECKLIST</p><h2 id="checklist-title">Make this space yours.</h2></div><span className="section-note" aria-live="polite">{done.length} of {items.length} completed</span></div>
@@ -61,7 +64,7 @@ export default function WelcomePage() {
         <p className="local-data-note" role="status" aria-live="polite">{storageAvailable ? 'Checklist progress is stored in this browser only. It is not synced to an account.' : "Browser storage is unavailable. Changes remain only while this page is open and will be lost when you leave or refresh."}</p>
       </section>
       <section className="welcome-boundary"><strong>What is live in this preview?</strong><p>You can explore the interface, save a local profile and track a personal checklist. Mentor conversations, account sync, personalized recommendations and connected articles, jobs or products are not enabled yet.</p></section>
-      <footer className="site-footer"><Link className="footer-brand" href="/">onlyducks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
+      <SiteFooter />
     </main>
     </>
   );
