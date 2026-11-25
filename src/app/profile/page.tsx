@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteHeader } from '../../components/site-header';
+import { SiteFooter } from '../../components/site-footer';
+
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
@@ -96,13 +99,7 @@ export default function ProfilePage() {
     <>
       <a className="skip-link" href="#page-content">Skip to main content</a>
       <main className="app-shell">
-      <header className="topbar">
-        <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>OnlyDucks</Link>
-        <nav className="main-nav" aria-label="Main navigation">
-          <Link className="nav-link" href="/">Overview</Link><Link className="nav-link" href="/welcome">Start here</Link><Link className="nav-link" href="/mentors">Mentors</Link><Link className="nav-link" href="/agent">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link><Link className="nav-link" href="/roadmap">Roadmap</Link><Link className="nav-link nav-link-active" href="/profile" aria-current="page">Profile</Link><Link className="nav-link" href="/feed">Opportunities</Link>
-        </nav>
-        <span className="environment-pill"><span className="status-dot" /> Local preview</span>
-      </header>
+      <SiteHeader active="/profile" status="Preview" />
 
       <section id="page-content" tabIndex={-1} className="page-intro" aria-labelledby="page-title">
         <p className="eyebrow"><span className="eyebrow-line" /> YOUR DEVELOPER SPACE</p>
@@ -145,7 +142,7 @@ export default function ProfilePage() {
           <span className="preview-footnote">Preview only · Not publicly visible</span>
         </aside>
       </div>
-      <footer className="site-footer"><Link className="footer-brand" href="/">OnlyDucks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
+      <SiteFooter />
     </main>
     </>
   );

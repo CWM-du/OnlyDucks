@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteHeader } from '../../components/site-header';
+import { SiteFooter } from '../../components/site-footer';
+
 import Link from 'next/link';
 import { useMemo, useState } from 'react';
 
@@ -25,20 +28,7 @@ export default function DemoPage() {
     <>
       <a className="skip-link" href="#page-content">Skip to main content</a>
       <main className="app-shell">
-        <header className="topbar">
-          <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
-          <nav className="main-nav" aria-label="Main navigation">
-            <Link className="nav-link" href="/">Overview</Link>
-            <Link className="nav-link" href="/welcome">Start here</Link>
-            <Link className="nav-link" href="/mentors">Mentors</Link>
-            <Link className="nav-link" href="/agent">Agent</Link>
-            <Link className="nav-link" href="/sandbox">Sandbox</Link>
-            <Link className="nav-link" href="/roadmap">Roadmap</Link>
-            <Link className="nav-link" href="/profile">Profile</Link>
-            <Link className="nav-link" href="/feed">Opportunities</Link>
-          </nav>
-          <span className="environment-pill"><span className="status-dot status-dot-muted" /> Guided demo</span>
-        </header>
+        <SiteHeader status="Preview" />
 
         <section id="page-content" tabIndex={-1} className="page-intro" aria-labelledby="page-title">
           <p className="eyebrow"><span className="eyebrow-line" /> PRODUCT WALKTHROUGH</p>
@@ -95,7 +85,7 @@ export default function DemoPage() {
             <Link className="text-link" href="/feed">View opportunities <span aria-hidden="true">→</span></Link>
           </div>
         </section>
-        <footer className="site-footer"><Link className="footer-brand" href="/">onlyducks</Link><span>Learning, with a next step in mind.</span><span>Early preview</span></footer>
+        <SiteFooter />
       </main>
     </>
   );

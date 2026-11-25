@@ -3,15 +3,17 @@
 import { useEffect, useState } from 'react';
 import { useOnlyDucksTheme } from '../components/theme-provider';
 import Link from 'next/link';
+import { FirstVisitTour } from '../components/first-visit-tour';
 
 const navigation = [
-  { icon: '⌂', label: 'Para ti', href: '/', active: true },
-  { icon: '♨', label: 'Tendencias', href: '/feed' },
-  { icon: '▱', label: 'Guardados', href: '/profile' },
-  { icon: '▣', label: 'Empleo', href: '/feed' },
-  { icon: '✦', label: 'Rutas de aprendizaje', href: '/roadmap' },
-  { icon: '◎', label: 'Expertos', href: '/mentors' },
-  { icon: '◈', label: 'Agente IA', href: '/agent' },
+  { icon: '⌂', label: 'Inicio', href: '/', active: true },
+  { icon: '➜', label: 'Empieza aquí', href: '/welcome' },
+  { icon: '◎', label: 'Mentores', href: '/mentors' },
+  { icon: '✦', label: 'Agente', href: '/agent' },
+  { icon: '▣', label: 'Sandbox', href: '/sandbox' },
+  { icon: '▤', label: 'Roadmap', href: '/roadmap' },
+  { icon: '◉', label: 'Perfil', href: '/profile' },
+  { icon: '⌕', label: 'Oportunidades', href: '/feed' },
 ];
 
 const trends = [
@@ -53,9 +55,7 @@ export default function HomePage() {
           <span className="od-brand-mark">o</span><span>Only<em>Ducks</em></span>
         </Link>
         <nav className="od-topnav" aria-label="Navegación principal">
-          <Link className="active" href="/">Inicio</Link>
-          <Link href="/feed">Explorar</Link>
-          <Link href="/roadmap">Aprender</Link>
+          <Link className="active" href="/">Inicio</Link><Link href="/welcome">Empieza aquí</Link><Link href="/mentors">Mentores</Link><Link href="/agent">Agente</Link><Link href="/sandbox">Sandbox</Link><Link href="/roadmap">Roadmap</Link><Link href="/profile">Perfil</Link><Link href="/feed">Oportunidades</Link>
         </nav>
         <div className="od-top-actions">
           <button className="od-theme-toggle" type="button" onClick={toggleTheme} aria-label={theme === 'light' ? 'Cambiar al tema oscuro' : 'Cambiar al tema claro'}>
@@ -66,7 +66,13 @@ export default function HomePage() {
           <Link className="od-join" href="/welcome">Crear cuenta</Link>
         </div>
       </header>
-
+      <section className="od-home-intro" aria-labelledby="home-intro-title">
+        <p className="od-home-eyebrow">TU SIGUIENTE PASO EMPIEZA AQUÍ</p>
+        <h1 id="home-intro-title">Aprende, practica y <span>avanza</span> en tu carrera.</h1>
+        <p>OnlyDucks conecta orientación de expertos, aprendizaje práctico y oportunidades profesionales para ayudarte a convertir tus objetivos en pasos concretos.</p>
+        <div className="od-home-actions"><Link className="od-home-primary" href="/welcome">Descubre cómo funciona <span aria-hidden="true">→</span></Link><FirstVisitTour /></div>
+        <div className="od-home-pillars"><article><strong>01 · Aprende</strong><span>Encuentra el enfoque y la orientación que necesitas.</span></article><article><strong>02 · Practica</strong><span>Organiza objetivos y convierte ideas en proyectos.</span></article><article><strong>03 · Conecta</strong><span>Explora recursos y oportunidades para tu siguiente paso.</span></article></div>
+      </section>
       <div className="od-layout">
         <aside className="od-left" aria-label="Menú lateral">
           <section className="od-sidebar-card od-intro-card">
@@ -124,9 +130,8 @@ export default function HomePage() {
         </aside>
       </div>
 
-      <nav className="od-bottom-nav" aria-label="Navegación móvil">
-        <Link href="/"><span>⌂</span>Inicio</Link><Link href="/feed"><span>⌕</span>Explorar</Link><Link href="/agent"><span>✦</span>Agente</Link><Link href="/roadmap"><span>▤</span>Aprender</Link><Link href="/profile"><span>◉</span>Perfil</Link>
-      </nav>
+      <nav className="od-bottom-nav" aria-label="Navegación móvil"><Link href="/"><span>⌂</span>Inicio</Link><Link href="/welcome"><span>➜</span>Empezar</Link><Link href="/mentors"><span>◎</span>Mentores</Link><Link href="/roadmap"><span>▤</span>Roadmap</Link><Link href="/profile"><span>◉</span>Perfil</Link></nav>
+      <footer className="od-site-footer"><Link href="/" className="od-footer-brand">OnlyDucks</Link><span>Aprende · Practica · Conecta</span><Link href="/welcome">Cómo funciona →</Link></footer>
     </main>
   );
 }
