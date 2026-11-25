@@ -161,6 +161,7 @@ export default function AgentPage() {
             <Link className="button button-secondary" href="/demo">Open guided demo <span aria-hidden="true">→</span></Link>
           </div>
         </section>
+        <SiteFooter />
       </main>
     </>
   );
