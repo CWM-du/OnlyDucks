@@ -1,5 +1,8 @@
 'use client';
 
+import { SiteHeader } from '../../components/site-header';
+import { SiteFooter } from '../../components/site-footer';
+
 import Link from 'next/link';
 import { useState } from 'react';
 import type { FormEvent } from 'react';
@@ -54,19 +57,7 @@ export default function AgentPage() {
     <>
       <a className="skip-link" href="#page-content">Skip to main content</a>
       <main className="app-shell">
-        <header className="topbar">
-          <Link className="brand" href="/" aria-label="OnlyDucks home"><span className="brand-mark">o</span>onlyducks</Link>
-          <nav className="main-nav" aria-label="Main navigation">
-            <Link className="nav-link" href="/">Overview</Link>
-            <Link className="nav-link" href="/welcome">Start here</Link>
-            <Link className="nav-link" href="/mentors">Mentors</Link>
-            <Link className="nav-link" href="/agent" aria-current="page">Agent</Link><Link className="nav-link" href="/sandbox">Sandbox</Link>
-            <Link className="nav-link" href="/roadmap">Roadmap</Link>
-            <Link className="nav-link" href="/profile">Profile</Link>
-            <Link className="nav-link" href="/feed">Opportunities</Link>
-          </nav>
-          <span className="environment-pill"><span className="status-dot status-dot-muted" /> Demo workspace</span>
-        </header>
+        <SiteHeader active="/agent" status="Preview" />
 
         <section id="page-content" tabIndex={-1} className="agent-page" aria-labelledby="page-title">
           <div className="agent-heading">
