@@ -39,6 +39,7 @@ export default function SandboxPage() {
             <Link className="text-link" href="/roadmap">View the learning roadmap <span aria-hidden="true">→</span></Link>
           </div>
         </section>
+        <SiteFooter />
       </main>
     </>
   );
