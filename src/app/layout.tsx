@@ -5,7 +5,8 @@ import { ThemeProvider } from '../components/theme-provider';
 
 export const metadata: Metadata = {
   title: { default: 'OnlyDucks | Tu red profesional', template: '%s | OnlyDucks' },
-  description: 'Aprende siguiendo a expertos, descubre recursos profesionales y encuentra nuevas oportunidades.'
+  description: 'OnlyDucks conecta orientación de expertos, aprendizaje práctico y oportunidades profesionales para ayudarte a avanzar en tu carrera.',
+  icons: { icon: '/favicon.svg' }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
